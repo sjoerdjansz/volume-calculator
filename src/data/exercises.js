@@ -1,0 +1,38 @@
+export const EXERCISES = [
+  {
+    name: "Bench Press",
+    value: "bench press",
+    primaryMuscle: "Pectoralis major",
+    secondaryMuscles: ["Triceps brachii", "Deltoideus anterior"],
+    movement: "Horizontal push",
+    bodyPart: "Chest",
+    sets: 3,
+  },
+  {
+    name: "Deadlift",
+    value: "deadlift",
+    primaryMuscle: "Erector spinae",
+    secondaryMuscles: ["Gluteus maximus", "Hamstrings"],
+    movement: "Hip hinge",
+    bodyPart: "Posterior chain",
+    sets: 4,
+  },
+  {
+    name: "Overhead Press",
+    value: "overhead press",
+    primaryMuscle: "Deltoideus anterior",
+    secondaryMuscles: ["Triceps brachii", "Trapezius"],
+    movement: "Vertical push",
+    bodyPart: "Shoulders",
+    sets: 2,
+  },
+  {
+    name: "Barbell Row",
+    value: "barbell row",
+    primaryMuscle: "Latissimus dorsi",
+    secondaryMuscles: ["Rhomboids", "Posterior deltoideus"],
+    movement: "Horizontal pull",
+    bodyPart: "Back",
+    sets: 3,
+  },
+];

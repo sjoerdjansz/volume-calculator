@@ -1,0 +1,29 @@
+.input-wrapper {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+}
+
+.input-wrapper--small {
+  max-width: 200px;
+}
+
+.input-wrapper--medium {
+  max-width: 300px;
+}
+
+.input-wrapper--large {
+  max-width: 500px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}

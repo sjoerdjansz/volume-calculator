@@ -1,0 +1,9 @@
+input {
+  padding: var(--spacing-sm);
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-small);
+  background-color: var(--color-surface-variant);
+  color: var(--color-text-primary);
+  outline: none;
+}

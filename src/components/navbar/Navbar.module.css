@@ -1,0 +1,27 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: var(--color-surface);
+  height: 75px;
+}
+
+.navbar-list {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.navbar-list > li {
+  gap: 1rem;
+  padding: var(--spacing-sm);
+}
+
+.logo {
+  color: var(--color-accent-primary);
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid var(--color-accent-primary);
+  border-radius: 1rem;
+  background-color: var(--color-accent-primary-disabled);
+}
