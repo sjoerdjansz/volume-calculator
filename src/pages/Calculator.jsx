@@ -5,26 +5,48 @@ import { InputField } from "../components/inputField/InputField.jsx";
 import { Button } from "../components/button/Button.jsx";
 import { ExerciseCard } from "../components/exerciseCard/ExerciseCard.jsx";
 import { useEffect, useState } from "react";
-import { calculateVolume } from "../helpers/calculateVolume.js";
+import {
+  calculateSingleExerciseVolumes,
+  calculateTotalVolumes,
+} from "../helpers/calculateVolume.js";
 import { ESTIMATE_MODES } from "../data/estimateMode.js";
 import { WORKOUT_SELECT_OPTIONS } from "../data/workoutSelectOptions.js";
 import { EXERCISES } from "../data/exercises.js";
+import {
+  CaretCircleDown,
+  CaretCircleUp,
+  Eye,
+  EyeClosed,
+} from "@phosphor-icons/react";
 
 export function Calculator() {
-  const [volumes, setVolumes] = useState([]);
+  const [singleExerciseVolumes, setSingleExerciseVolumes] = useState([]);
   const [mode, setMode] = useState("");
   const [selectedWorkout, setSelectedWorkout] = useState("");
+  const [totalMuscleVolume, setTotalMuscleVolume] = useState([]);
+  const [toggleVolume, setToggleVolume] = useState(false);
 
   useEffect(() => {
     if (!mode) {
       return;
     }
-    const newVolumes = calculateVolume(EXERCISES, ESTIMATE_MODES, mode);
-    console.log(newVolumes);
 
-    setVolumes(newVolumes);
+    const singleExercises = calculateSingleExerciseVolumes(
+      EXERCISES,
+      ESTIMATE_MODES,
+      mode,
+    );
+    const totalMuscleVolumes = calculateTotalVolumes(
+      mode,
+      ESTIMATE_MODES,
+      EXERCISES,
+    );
+
+    console.log(totalMuscleVolumes);
+
+    setTotalMuscleVolume(totalMuscleVolumes);
+    setSingleExerciseVolumes(singleExercises);
   }, [mode]);
-
   return (
     <div className={styles["workouts"]}>
       <header>
@@ -41,8 +63,43 @@ export function Calculator() {
             value={selectedWorkout}
           />
         </InputWrapper>
-        <div></div>
       </header>
+      <section className={styles["workouts__total-volume"]}>
+        <div>
+          <h2>Total training volume</h2>
+          <div
+            onClick={() => {
+              setToggleVolume(!toggleVolume);
+            }}
+          >
+            <span>{toggleVolume ? "Show" : "Hide"}</span>
+            {toggleVolume ? <Eye size={20} /> : <EyeClosed size={20} />}
+          </div>
+        </div>
+        {mode ? (
+          <ul
+            className={`${styles["workouts-total-volume__list"]} ${toggleVolume && styles["disabled"]}`}
+          >
+            {totalMuscleVolume &&
+              totalMuscleVolume.map((muscle, index) => {
+                return (
+                  <li
+                    className={styles["workouts-total-volume__list-item"]}
+                    key={index}
+                  >
+                    <span>{muscle.volume.toFixed(2)}</span>
+                    <p>{muscle.muscle}</p>
+                  </li>
+                );
+              })}
+          </ul>
+        ) : (
+          <div className={styles["workouts-total-volume__list"]}>
+            <p>Add exercises and choose a mode to display muscle volume.</p>
+          </div>
+        )}
+      </section>
+
       <hr />
       <main className={styles["workouts-container"]}>
         <div className={styles["workouts-container__controls"]}>
@@ -62,7 +119,7 @@ export function Calculator() {
               options={["Neutral", "Optimistic", "Conservative"]}
               placeholder="Choose mode"
               onChange={(e) => {
-                setMode(e.target.value);
+                setMode(e.target.value.toLowerCase());
               }}
               value={mode}
             />
@@ -75,7 +132,7 @@ export function Calculator() {
                 exercise={exercise}
                 key={exercise.value}
                 volume={
-                  volumes[index] || {
+                  singleExerciseVolumes[index] || {
                     primary: null,
                     secondary: null,
                   }

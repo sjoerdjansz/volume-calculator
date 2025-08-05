@@ -4,7 +4,6 @@ import { InputWrapper } from "../InputWrapper/InputWrapper.jsx";
 import { InputField } from "../inputField/InputField.jsx";
 
 export function ExerciseCard({ exercise, volume }) {
-  console.log(volume);
   return (
     <article className={styles["exercise-card"]}>
       {volume || exercise ? (

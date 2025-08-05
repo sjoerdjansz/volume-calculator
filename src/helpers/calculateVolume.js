@@ -1,4 +1,4 @@
-export function calculateVolume(exercisesData, modeData, mode) {
+export function calculateSingleExerciseVolumes(exercisesData, modeData, mode) {
   const factor = modeData[mode.toLowerCase()];
 
   return exercisesData.map((i) => {
@@ -7,4 +7,40 @@ export function calculateVolume(exercisesData, modeData, mode) {
       secondary: parseFloat((i.sets * factor.secondary).toFixed(2)),
     };
   });
+}
+
+export function calculateTotalVolumes(mode, modeData, exercises) {
+  const { primary, secondary } = modeData[mode];
+
+  const newData = [];
+
+  exercises.forEach((exercise) => {
+    newData.push({
+      muscle: exercise.primaryMuscle,
+      volume: exercise.sets * primary,
+    });
+    exercise.secondaryMuscles.forEach((muscle) => {
+      newData.push({
+        muscle: muscle,
+        volume: exercise.sets * secondary,
+      });
+    });
+  });
+
+  const reducedArr = newData.reduce((acc, current) => {
+    if (acc[current.muscle]) {
+      acc[current.muscle] += current.volume;
+    } else {
+      acc[current.muscle] = current.volume;
+    }
+    return acc;
+  }, {});
+  return Object.entries(reducedArr)
+    .map(([muscle, volume]) => ({
+      muscle,
+      volume,
+    }))
+    .sort((a, b) => {
+      return b.volume - a.volume;
+    });
 }

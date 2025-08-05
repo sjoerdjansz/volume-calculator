@@ -9,6 +9,60 @@ header {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+}
+
+.workouts__total-volume {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.workouts__total-volume > :first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.workouts__total-volume > :first-child > div {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.workouts-total-volume__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-small);
+}
+
+.workouts-total-volume__list > p {
+  font-size: var(--font-size-small);
+  color: var(--color-text-disabled);
+}
+
+.workouts-total-volume__list-item {
+  display: flex;
+  font-size: var(--font-size-xsmall);
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex: 0 1 120px;
+}
+
+.disabled {
+  display: none;
+}
+
+.workouts-total-volume__list-item > span {
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface-variant);
+  border-radius: var(--radius-small);
 }
 
 .workouts-container {
@@ -35,6 +89,7 @@ header {
   flex-direction: column;
   gap: var(--spacing-md);
   height: 100%;
+  max-height: 600px;
   overflow-y: scroll;
 }
 
@@ -46,7 +101,11 @@ header {
 
 footer {
   display: flex;
+  position: sticky;
+  bottom: 0;
+  z-index: 999;
   flex-direction: column;
   gap: var(--spacing-sm);
-  padding-top: var(--spacing-md);
+  background-color: var(--color-bg);
+  padding: var(--spacing-md) 0;
 }
