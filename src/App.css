@@ -8,22 +8,8 @@ CSS RESET
   box-sizing: border-box;
 }
 
-::-webkit-scrollbar {
-  width: var(--spacing-sm);
-}
-
-::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
 ::-webkit-scrollbar-thumb {
   background-color: var(--color-text-disabled);
-  cursor: grab;
-  border-radius: var(--radius-small);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-text-primary);
 }
 
 ul,

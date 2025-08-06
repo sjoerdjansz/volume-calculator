@@ -5,6 +5,7 @@
   padding: var(--spacing-md);
   border-radius: var(--radius-small);
   font-size: var(--font-size-small);
+  box-shadow: var(--shadow-elevated);
 }
 
 .exercise-card__title-wrapper {

@@ -10,7 +10,7 @@ export function SelectInput({
 }) {
   return (
     <>
-      <select value={value} name={name} id={id} onChange={onChange}>
+      <select value={value || ""} name={name} id={id} onChange={onChange}>
         {placeholder && (
           <option disabled value="">
             {placeholder}

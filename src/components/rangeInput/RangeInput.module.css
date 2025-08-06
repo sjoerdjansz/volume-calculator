@@ -1,0 +1,61 @@
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
+}
+
+/***** Chrome, Safari, Opera, and Edge Chromium *****/
+input[type="range"]::-webkit-slider-runnable-track {
+  background: var(--color-surface-variant);
+  height: 0.4rem;
+  border-radius: var(--radius-base);
+}
+
+/******** Firefox ********/
+input[type="range"]::-moz-range-track {
+  background: var(--color-surface-variant);
+  height: 0.4rem;
+  border-radius: var(--radius-base);
+}
+
+/***** Thumb Styles *****/
+/***** Chrome, Safari, Opera, and Edge Chromium *****/
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  margin-top: -5px; /* Centers thumb on the track */
+  background-color: var(--color-accent-primary);
+  border-radius: 100%;
+  height: 1rem;
+  width: 1rem;
+}
+
+/***** Focus Styles *****/
+/* Removes default focus */
+input[type="range"]:focus {
+  outline: none;
+}
+
+.range-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+.range-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 1.5rem;
+  background: var(--color-surface-variant);
+  color: var(--color-accent-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-small);
+  font-size: var(--font-size-xsmall);
+  pointer-events: none;
+  font-weight: bold;
+}

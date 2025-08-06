@@ -12,12 +12,9 @@ import {
 import { ESTIMATE_MODES } from "../data/estimateMode.js";
 import { WORKOUT_SELECT_OPTIONS } from "../data/workoutSelectOptions.js";
 import { EXERCISES } from "../data/exercises.js";
-import {
-  CaretCircleDown,
-  CaretCircleUp,
-  Eye,
-  EyeClosed,
-} from "@phosphor-icons/react";
+import { Eye, EyeClosed } from "@phosphor-icons/react";
+import { RangeInput } from "../components/rangeInput/RangeInput.jsx";
+import { AddExerciseModal } from "../components/addExerciseModal/AddExerciseModal.jsx";
 
 export function Calculator() {
   const [singleExerciseVolumes, setSingleExerciseVolumes] = useState([]);
@@ -25,6 +22,8 @@ export function Calculator() {
   const [selectedWorkout, setSelectedWorkout] = useState("");
   const [totalMuscleVolume, setTotalMuscleVolume] = useState([]);
   const [toggleVolume, setToggleVolume] = useState(false);
+  const [trainingFrequency, setTrainingFrequency] = useState(1);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (!mode) {
@@ -42,13 +41,20 @@ export function Calculator() {
       EXERCISES,
     );
 
-    console.log(totalMuscleVolumes);
-
     setTotalMuscleVolume(totalMuscleVolumes);
     setSingleExerciseVolumes(singleExercises);
   }, [mode]);
   return (
     <div className={styles["workouts"]}>
+      {showModal && (
+        <AddExerciseModal
+          searchType="exercise"
+          title="Add exercise to workout"
+          searchData={EXERCISES}
+          onClose={() => setShowModal(false)}
+        />
+      )}
+
       <header>
         <h1>Workout Templates</h1>
         <InputWrapper maxWidth="100%">
@@ -56,7 +62,7 @@ export function Calculator() {
             id="workouts"
             name="workout-select"
             options={WORKOUT_SELECT_OPTIONS}
-            placeholder="Select a workout"
+            placeholder="Select workout"
             onChange={(e) => {
               setSelectedWorkout(e.target.value);
             }}
@@ -76,6 +82,21 @@ export function Calculator() {
             {toggleVolume ? <Eye size={20} /> : <EyeClosed size={20} />}
           </div>
         </div>
+        <div className={styles["workouts__frequency"]}>
+          <InputWrapper maxWidth="50%" direction="row">
+            <RangeInput
+              name="Frequency"
+              id="frequency"
+              hasLabel={true}
+              min="1"
+              max="7"
+              value={trainingFrequency}
+              onChange={(e) => {
+                setTrainingFrequency(e.target.value);
+              }}
+            />
+          </InputWrapper>
+        </div>
         {mode ? (
           <ul
             className={`${styles["workouts-total-volume__list"]} ${toggleVolume && styles["disabled"]}`}
@@ -87,7 +108,9 @@ export function Calculator() {
                     className={styles["workouts-total-volume__list-item"]}
                     key={index}
                   >
-                    <span>{muscle.volume.toFixed(2)}</span>
+                    <span>
+                      {(muscle.volume * trainingFrequency).toFixed(2)}
+                    </span>
                     <p>{muscle.muscle}</p>
                   </li>
                 );
@@ -116,7 +139,7 @@ export function Calculator() {
             <SelectInput
               id="mode"
               name="mode-select"
-              options={["Neutral", "Optimistic", "Conservative"]}
+              options={["neutral", "optimistic", "conservative"]}
               placeholder="Choose mode"
               onChange={(e) => {
                 setMode(e.target.value.toLowerCase());
@@ -149,6 +172,9 @@ export function Calculator() {
           disabled={false}
           label="Add Exercise"
           styling="primary"
+          onClick={() => {
+            setShowModal(!showModal);
+          }}
         />
         <Button
           type="submit"

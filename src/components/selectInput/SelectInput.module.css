@@ -6,4 +6,6 @@ select {
   background-color: var(--color-surface-variant);
   color: var(--color-text-primary);
   outline: none;
+  text-transform: capitalize;
+  box-shadow: var(--shadow-elevated);
 }
