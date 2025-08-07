@@ -55,6 +55,7 @@ aside {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-bottom: var(--spacing-md);
 }
 
 .workouts__workout-name-container > h4 {
