@@ -23,13 +23,13 @@
 .modal {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
   width: 100%;
   align-self: center;
   background-color: var(--color-surface);
   position: relative;
   z-index: 1;
-  max-height: 450px;
+  max-height: 650px;
   max-width: 450px;
   border-radius: var(--radius-small);
   border: 5px solid var(--color-border);
@@ -54,15 +54,62 @@
   color: var(--color-error-hover);
 }
 
-.modal__content {
+.modal__no-exercises-selected {
+  font-size: var(--font-size-xsmall);
+  align-self: center;
+  color: var(--color-text-disabled);
+}
+
+.modal__current-exercises-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  overflow-y: auto;
+  min-height: 35px;
+  max-height: 110px;
+}
+
+.modal__current-exercise {
+  font-size: var(--font-size-xsmall);
+  padding: var(--spacing-sm);
+  background-color: var(--color-bg);
+  border-radius: var(--radius-small);
+}
+
+.modal__current-exercise > :first-child {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
   height: 100%;
+}
+
+.modal__current-exercise > :first-child:hover {
+  color: var(--color-error-hover);
+  cursor: pointer;
+}
+
+.modal__current-exercise > :first-child > span {
+  color: var(--color-error);
+  display: flex;
+}
+
+.modal__current-exercise > :first-child > span:hover {
+  color: var(--color-error-hover);
+}
+
+.modal__content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
 }
 
 .modal__search-results-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  flex-grow: 1;
   gap: var(--spacing-md);
+  overflow: hidden;
 }
 
 .modal__search-results {
@@ -74,8 +121,8 @@
   padding: var(--spacing-md) 0;
   border-radius: var(--radius-small);
   box-shadow: var(--shadow-elevated);
-  overflow: auto;
-  height: 11rem;
+  overflow-y: scroll;
+  flex: 0 0 220px;
   gap: 0.5rem;
 }
 
@@ -89,4 +136,8 @@
   cursor: pointer;
   color: var(--color-accent-secondary);
   background-color: var(--color-surface);
+}
+
+.modal__result > :nth-child(1) {
+  color: var(--color-text-disabled);
 }

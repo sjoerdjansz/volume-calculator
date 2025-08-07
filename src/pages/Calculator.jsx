@@ -12,7 +12,7 @@ import {
 import { ESTIMATE_MODES } from "../data/estimateMode.js";
 import { WORKOUT_SELECT_OPTIONS } from "../data/workoutSelectOptions.js";
 import { EXERCISES } from "../data/exercises.js";
-import { Eye, EyeClosed } from "@phosphor-icons/react";
+import { Barbell, CaretCircleDown, CaretCircleUp } from "@phosphor-icons/react";
 import { RangeInput } from "../components/rangeInput/RangeInput.jsx";
 import { AddExerciseModal } from "../components/addExerciseModal/AddExerciseModal.jsx";
 
@@ -24,6 +24,9 @@ export function Calculator() {
   const [toggleVolume, setToggleVolume] = useState(false);
   const [trainingFrequency, setTrainingFrequency] = useState(1);
   const [showModal, setShowModal] = useState(false);
+  const [workoutExercises, setWorkoutExercises] = useState([]);
+  const [workoutName, setWorkoutName] = useState("");
+  const [allSets, setAllSets] = useState(0);
 
   useEffect(() => {
     if (!mode) {
@@ -31,19 +34,105 @@ export function Calculator() {
     }
 
     const singleExercises = calculateSingleExerciseVolumes(
-      EXERCISES,
+      workoutExercises,
       ESTIMATE_MODES,
       mode,
     );
     const totalMuscleVolumes = calculateTotalVolumes(
       mode,
       ESTIMATE_MODES,
-      EXERCISES,
+      workoutExercises,
     );
 
     setTotalMuscleVolume(totalMuscleVolumes);
     setSingleExerciseVolumes(singleExercises);
-  }, [mode]);
+  }, [mode, workoutExercises]);
+
+  useEffect(() => {
+    setWorkoutExercises((prevState) => {
+      return prevState.map((exercise) => {
+        return {
+          ...exercise,
+          sets: allSets,
+        };
+      });
+    });
+  }, [allSets]);
+
+  function handleAddExercise(exercise) {
+    const sanitizedExercise = exercise.trim().toLowerCase();
+
+    // match for search query
+    const match = EXERCISES.find((exercise) => {
+      return exercise.name.toLowerCase() === sanitizedExercise;
+    });
+
+    if (!match) {
+      console.warn("No match found");
+      return;
+    }
+
+    // check if exercise is already in array
+    const isDuplicate = workoutExercises.some((exercise) => {
+      return exercise.name.toLowerCase() === match.name.toLowerCase();
+    });
+
+    if (isDuplicate) {
+      console.warn("Exercise already in workout");
+      return;
+    }
+
+    setWorkoutExercises((prevState) => [
+      ...prevState,
+      {
+        ...match,
+        sets: null,
+      },
+    ]);
+  }
+
+  function handleRemoveExercise(exercise) {
+    const newWorkout = workoutExercises.filter((ex) => {
+      return ex.name !== exercise;
+    });
+
+    setWorkoutExercises(newWorkout);
+  }
+
+  function handleSetChange(name, newSets) {
+    if (newSets < 0) {
+      return;
+    }
+    // update state op basis van de vorige waarde
+    setWorkoutExercises((prevState) => {
+      // we maken een nieuwe arr waarin we 1 specifieke oefening bijwerken
+      // dit moet 'volgens react' ivm het immutability principe. Dus eerst
+      // een copy en aanpassing en dan de nieuwe state setten.
+      // dat principe niet honoreren zorgt dat react feitelijk hetzelfde object krijgt
+      // het verschil niet ziet en geen re-render doet
+      return prevState.map((exercise) => {
+        // als de namen overeenkomen returnen we een kopie van de exercise met de sets
+        return exercise.name === name
+          ? {
+              ...exercise,
+              sets: newSets,
+            }
+          : // de niet matches returnen we as is
+            exercise;
+      });
+    });
+  }
+
+  function handleWorkoutNameChange(e) {
+    const name = e.target.value;
+
+    if (name.length > 50) {
+      return;
+    }
+
+    setWorkoutName(name);
+  }
+
   return (
     <div className={styles["workouts"]}>
       {showModal && (
@@ -52,10 +141,12 @@ export function Calculator() {
           title="Add exercise to workout"
           searchData={EXERCISES}
           onClose={() => setShowModal(false)}
+          addExercise={handleAddExercise}
+          workoutExercises={workoutExercises}
+          removeExercise={handleRemoveExercise}
         />
       )}
-
-      <header>
+      <aside>
         <h1>Workout Templates</h1>
         <InputWrapper maxWidth="100%">
           <SelectInput
@@ -69,21 +160,25 @@ export function Calculator() {
             value={selectedWorkout}
           />
         </InputWrapper>
-      </header>
+      </aside>
       <section className={styles["workouts__total-volume"]}>
         <div>
-          <h2>Total training volume</h2>
+          <h3>Total training volume</h3>
           <div
             onClick={() => {
               setToggleVolume(!toggleVolume);
             }}
           >
             <span>{toggleVolume ? "Show" : "Hide"}</span>
-            {toggleVolume ? <Eye size={20} /> : <EyeClosed size={20} />}
+            {toggleVolume ? (
+              <CaretCircleUp size={20} />
+            ) : (
+              <CaretCircleDown size={20} />
+            )}
           </div>
         </div>
         <div className={styles["workouts__frequency"]}>
-          <InputWrapper maxWidth="50%" direction="row">
+          <InputWrapper maxWidth="60%" direction="row">
             <RangeInput
               name="Frequency"
               id="frequency"
@@ -93,6 +188,19 @@ export function Calculator() {
               value={trainingFrequency}
               onChange={(e) => {
                 setTrainingFrequency(e.target.value);
+              }}
+            />
+          </InputWrapper>
+          <InputWrapper maxWidth="60%" direction="row">
+            <RangeInput
+              name="Sets"
+              id="all-sets"
+              hasLabel={true}
+              min="0"
+              max="10"
+              value={allSets}
+              onChange={(e) => {
+                setAllSets(e.target.value);
               }}
             />
           </InputWrapper>
@@ -122,8 +230,11 @@ export function Calculator() {
           </div>
         )}
       </section>
-
-      <hr />
+      <div className={styles["workouts__workout-name-container"]}>
+        <hr />
+        <h4>{workoutName ? workoutName : <Barbell size={20} />}</h4>
+        <hr />
+      </div>
       <main className={styles["workouts-container"]}>
         <div className={styles["workouts-container__controls"]}>
           <InputWrapper maxWidth="100%">
@@ -133,6 +244,8 @@ export function Calculator() {
               type="text"
               hasLabel={false}
               placeholder="Workout name"
+              value={workoutName}
+              onChange={handleWorkoutNameChange}
             />
           </InputWrapper>
           <InputWrapper maxWidth="100%">
@@ -149,20 +262,31 @@ export function Calculator() {
           </InputWrapper>
         </div>
         <section className={styles["workouts-container__exercises"]}>
-          {EXERCISES.map((exercise, index) => {
-            return (
-              <ExerciseCard
-                exercise={exercise}
-                key={exercise.value}
-                volume={
-                  singleExerciseVolumes[index] || {
-                    primary: null,
-                    secondary: null,
+          {workoutExercises.length > 0 ? (
+            workoutExercises.map((exercise, index) => {
+              return (
+                <ExerciseCard
+                  exercise={exercise}
+                  key={index}
+                  volume={
+                    singleExerciseVolumes[index] || {
+                      primary: null,
+                      secondary: null,
+                    }
                   }
-                }
-              />
-            );
-          })}
+                  onSetChange={(newSets) =>
+                    handleSetChange(exercise.name, newSets)
+                  }
+                  removeExercise={handleRemoveExercise}
+                  volumeMode={mode}
+                />
+              );
+            })
+          ) : (
+            <p className={styles["no-exercises-message"]}>
+              No exercises to display.
+            </p>
+          )}
         </section>
       </main>
       <footer>

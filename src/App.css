@@ -9,7 +9,16 @@ CSS RESET
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--color-text-disabled);
+  background-color: var(--color-text-primary);
+  border-radius: var(--radius-base);
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-surface-variant);
 }
 
 ul,

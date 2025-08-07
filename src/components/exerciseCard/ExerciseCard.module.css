@@ -27,6 +27,7 @@
 
 .exercise-card__subtitle-wrapper > :first-child {
   color: var(--color-text-secondary);
+  text-transform: capitalize;
 }
 
 .subtitle-wrapper__sets {

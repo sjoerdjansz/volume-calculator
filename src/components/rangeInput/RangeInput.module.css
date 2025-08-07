@@ -46,6 +46,10 @@ input[type="range"]:focus {
   width: 100%;
 }
 
+.range-wrapper > label {
+  flex: 0 0 90px;
+}
+
 .range-label {
   display: flex;
   justify-content: center;

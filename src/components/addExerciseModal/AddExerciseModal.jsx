@@ -4,55 +4,25 @@ import { InputWrapper } from "../InputWrapper/InputWrapper.jsx";
 import { InputField } from "../inputField/InputField.jsx";
 import { useEffect, useState } from "react";
 import { MagnifyingGlass, XCircle } from "@phosphor-icons/react";
+import { searchAndScoreExercises } from "../../helpers/searchAndScoreExercises.jsx";
 
-export function AddExerciseModal({ searchData, searchType, title, onClose }) {
+export function AddExerciseModal({
+  searchData,
+  searchType,
+  title,
+  onClose,
+  addExercise,
+  workoutExercises,
+  removeExercise,
+}) {
   const [searchString, setSearchString] = useState("");
   const [exercises, setExercises] = useState([]);
 
   useEffect(() => {
-    const result = searchExercises(searchString, searchData);
+    const result = searchAndScoreExercises(searchString, searchData);
 
     setExercises(result);
   }, [searchString]);
-
-  function searchExercises(searchQuery, exerciseData) {
-    const sanitizedQuery = searchQuery.toLowerCase().trim();
-
-    if (sanitizedQuery === "") return exerciseData;
-
-    return exerciseData
-      .map((exercise) => {
-        let score = 0;
-        if (exercise.name.toLowerCase().includes(sanitizedQuery)) {
-          score += 3;
-        }
-        if (exercise.primaryMuscle.toLowerCase().includes(sanitizedQuery)) {
-          score += 2;
-        }
-        if (
-          exercise.secondaryMuscles.some((muscle) =>
-            muscle.toLowerCase().includes(sanitizedQuery),
-          )
-        ) {
-          score += 2;
-        }
-        if (exercise.bodyPart.toLowerCase().includes(sanitizedQuery)) {
-          score += 1;
-        }
-        if (exercise.movement.toLowerCase().includes(sanitizedQuery)) {
-          score += 1;
-        }
-        return {
-          exercise,
-          score,
-        };
-      })
-      .filter((item) => {
-        return item.score > 0;
-      })
-      .sort((a, b) => b.score - a.score)
-      .map((item) => item.exercise);
-  }
 
   return (
     <div className={styles["modal-wrapper"]}>
@@ -64,6 +34,32 @@ export function AddExerciseModal({ searchData, searchType, title, onClose }) {
           </div>
 
           <hr />
+          <ul className={styles["modal__current-exercises-container"]}>
+            {workoutExercises.length ? (
+              workoutExercises.map((exercise, index) => {
+                return (
+                  <li
+                    onClick={() => removeExercise(exercise.name)}
+                    key={index}
+                    className={styles["modal__current-exercise"]}
+                  >
+                    <p>
+                      {exercise.name}
+                      <span>
+                        <XCircle size={14} />
+                      </span>
+                    </p>
+                  </li>
+                );
+              })
+            ) : (
+              <li className={styles["modal__no-exercises-selected"]}>
+                <p>No exercises selected.</p>
+              </li>
+            )}
+          </ul>
+
+          <hr />
           <div className={styles["modal__content"]}>
             <InputWrapper maxWidth="100%" direction="column">
               <InputField
@@ -72,6 +68,7 @@ export function AddExerciseModal({ searchData, searchType, title, onClose }) {
                 name={`Search ${searchType}`}
                 id="search-exercise"
                 hasLabel={true}
+                placeholder="Name, muscle, movement or body part"
                 value={searchString}
                 onChange={(e) => {
                   setSearchString(e.target.value);
@@ -83,8 +80,14 @@ export function AddExerciseModal({ searchData, searchType, title, onClose }) {
                 {exercises &&
                   exercises.map((exercise, index) => {
                     return (
-                      <li key={index}>
-                        <span>{exercise.name}</span>
+                      <li
+                        key={index}
+                        onClick={() => addExercise(exercise.name)}
+                      >
+                        <p className={styles["modal__result"]}>
+                          {exercise.name}{" "}
+                          <span>({exercise.primaryMuscle})</span>
+                        </p>
                       </li>
                     );
                   })}
@@ -92,8 +95,9 @@ export function AddExerciseModal({ searchData, searchType, title, onClose }) {
               <Button
                 type="button"
                 label={`Add ${searchType}`}
-                styling="primary"
+                styling="primary-alt"
                 maxWidth="100%"
+                onClick={onClose}
               />
             </div>
           </div>

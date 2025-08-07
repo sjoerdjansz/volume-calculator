@@ -5,7 +5,7 @@
   flex-direction: column;
 }
 
-header {
+aside {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
@@ -20,6 +20,23 @@ header {
 
 .workouts__frequency {
   font-size: var(--font-size-small);
+}
+
+.workouts__workout-name-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.workouts__workout-name-container > h4 {
+  margin: 0 var(--spacing-md);
+  white-space: nowrap;
+}
+
+.workouts__workout-name-container > hr {
+  width: 100%;
 }
 
 .workouts__total-volume > :first-child {
@@ -98,7 +115,12 @@ header {
   gap: var(--spacing-md);
   height: 100%;
   max-height: 600px;
-  overflow-y: scroll;
+  overflow-y: auto;
+}
+
+.no-exercises-message {
+  font-size: var(--font-size-small);
+  color: var(--color-text-disabled);
 }
 
 @media (max-width: 768px) {

@@ -6,7 +6,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Triceps brachii", "Deltoideus anterior"],
     movement: "Horizontal push",
     bodyPart: "Chest",
-    sets: 3,
   },
   {
     name: "Deadlift",
@@ -15,7 +14,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Gluteus maximus", "Hamstrings"],
     movement: "Hip hinge",
     bodyPart: "Posterior chain",
-    sets: 4,
   },
   {
     name: "Overhead Press",
@@ -24,7 +22,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Triceps brachii", "Trapezius"],
     movement: "Vertical push",
     bodyPart: "Shoulders",
-    sets: 2,
   },
   {
     name: "Barbell Row",
@@ -33,7 +30,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Rhomboids", "Posterior deltoideus"],
     movement: "Horizontal pull",
     bodyPart: "Back",
-    sets: 3,
   },
   {
     name: "Pull-Up",
@@ -42,7 +38,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Biceps brachii", "Teres major"],
     movement: "Vertical pull",
     bodyPart: "Back",
-    sets: 3,
   },
   {
     name: "Chin-Up",
@@ -51,7 +46,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Biceps brachii", "Brachialis"],
     movement: "Vertical pull",
     bodyPart: "Back",
-    sets: 3,
   },
   {
     name: "Incline Dumbbell Press",
@@ -60,7 +54,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Triceps brachii", "Deltoideus anterior"],
     movement: "Horizontal push",
     bodyPart: "Chest",
-    sets: 3,
   },
   {
     name: "Push-Up",
@@ -69,7 +62,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Triceps brachii", "Deltoideus anterior"],
     movement: "Horizontal push",
     bodyPart: "Chest",
-    sets: 3,
   },
   {
     name: "Dips",
@@ -78,7 +70,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Pectoralis major", "Deltoideus anterior"],
     movement: "Vertical push",
     bodyPart: "Chest",
-    sets: 3,
   },
   {
     name: "Front Squat",
@@ -87,7 +78,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Gluteus maximus", "Erector spinae"],
     movement: "Squat",
     bodyPart: "Legs",
-    sets: 4,
   },
   {
     name: "Back Squat",
@@ -96,7 +86,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Gluteus maximus", "Hamstrings"],
     movement: "Squat",
     bodyPart: "Legs",
-    sets: 4,
   },
   {
     name: "Bulgarian Split Squat",
@@ -105,7 +94,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Gluteus maximus", "Hamstrings"],
     movement: "Lunge",
     bodyPart: "Legs",
-    sets: 3,
   },
   {
     name: "Walking Lunge",
@@ -114,7 +102,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Gluteus maximus", "Hamstrings"],
     movement: "Lunge",
     bodyPart: "Legs",
-    sets: 3,
   },
   {
     name: "Hip Thrust",
@@ -123,7 +110,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Hamstrings", "Erector spinae"],
     movement: "Hip hinge",
     bodyPart: "Glutes",
-    sets: 4,
   },
   {
     name: "Romanian Deadlift",
@@ -132,7 +118,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Gluteus maximus", "Erector spinae"],
     movement: "Hip hinge",
     bodyPart: "Posterior chain",
-    sets: 4,
   },
   {
     name: "Sumo Deadlift",
@@ -141,7 +126,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Adductors", "Quadriceps"],
     movement: "Hip hinge",
     bodyPart: "Posterior chain",
-    sets: 4,
   },
   {
     name: "Good Morning",
@@ -150,7 +134,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Hamstrings", "Gluteus maximus"],
     movement: "Hip hinge",
     bodyPart: "Posterior chain",
-    sets: 3,
   },
   {
     name: "Seated Cable Row",
@@ -159,7 +142,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Rhomboids", "Posterior deltoideus"],
     movement: "Horizontal pull",
     bodyPart: "Back",
-    sets: 3,
   },
   {
     name: "Face Pull",
@@ -168,7 +150,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Rhomboids", "Trapezius"],
     movement: "Horizontal pull",
     bodyPart: "Shoulders",
-    sets: 3,
   },
   {
     name: "Lateral Raise",
@@ -177,7 +158,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Supraspinatus"],
     movement: "Shoulder abduction",
     bodyPart: "Shoulders",
-    sets: 3,
   },
   {
     name: "Front Raise",
@@ -186,7 +166,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Serratus anterior"],
     movement: "Shoulder flexion",
     bodyPart: "Shoulders",
-    sets: 3,
   },
   {
     name: "Rear Delt Fly",
@@ -195,7 +174,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Rhomboids", "Trapezius"],
     movement: "Horizontal abduction",
     bodyPart: "Shoulders",
-    sets: 3,
   },
   {
     name: "Arnold Press",
@@ -204,7 +182,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Deltoideus lateralis", "Triceps brachii"],
     movement: "Vertical push",
     bodyPart: "Shoulders",
-    sets: 3,
   },
   {
     name: "Bicep Curl",
@@ -213,7 +190,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Brachialis"],
     movement: "Elbow flexion",
     bodyPart: "Arms",
-    sets: 3,
   },
   {
     name: "Hammer Curl",
@@ -222,7 +198,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Biceps brachii", "Brachialis"],
     movement: "Elbow flexion",
     bodyPart: "Arms",
-    sets: 3,
   },
   {
     name: "Concentration Curl",
@@ -231,7 +206,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Brachialis"],
     movement: "Elbow flexion",
     bodyPart: "Arms",
-    sets: 3,
   },
   {
     name: "Preacher Curl",
@@ -240,7 +214,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Brachialis"],
     movement: "Elbow flexion",
     bodyPart: "Arms",
-    sets: 3,
   },
   {
     name: "Tricep Pushdown",
@@ -249,7 +222,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Anconeus"],
     movement: "Elbow extension",
     bodyPart: "Arms",
-    sets: 3,
   },
   {
     name: "Skull Crusher",
@@ -258,7 +230,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Anconeus"],
     movement: "Elbow extension",
     bodyPart: "Arms",
-    sets: 3,
   },
   {
     name: "Overhead Tricep Extension",
@@ -267,7 +238,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Anconeus"],
     movement: "Elbow extension",
     bodyPart: "Arms",
-    sets: 3,
   },
   {
     name: "Cable Kickback",
@@ -276,7 +246,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Deltoideus posterior"],
     movement: "Elbow extension",
     bodyPart: "Arms",
-    sets: 3,
   },
   {
     name: "Leg Press",
@@ -285,7 +254,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Gluteus maximus", "Hamstrings"],
     movement: "Squat",
     bodyPart: "Legs",
-    sets: 4,
   },
   {
     name: "Leg Extension",
@@ -294,7 +262,6 @@ export const EXERCISES = [
     secondaryMuscles: [],
     movement: "Knee extension",
     bodyPart: "Legs",
-    sets: 3,
   },
   {
     name: "Leg Curl",
@@ -303,7 +270,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Gastrocnemius"],
     movement: "Knee flexion",
     bodyPart: "Legs",
-    sets: 3,
   },
   {
     name: "Calf Raise",
@@ -312,7 +278,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Soleus"],
     movement: "Plantar flexion",
     bodyPart: "Calves",
-    sets: 4,
   },
   {
     name: "Seated Calf Raise",
@@ -321,7 +286,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Gastrocnemius"],
     movement: "Plantar flexion",
     bodyPart: "Calves",
-    sets: 4,
   },
   {
     name: "Farmer's Carry",
@@ -330,7 +294,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Trapezius", "Core musculature"],
     movement: "Carry",
     bodyPart: "Full body",
-    sets: 3,
   },
   {
     name: "Shrug",
@@ -339,7 +302,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Levator scapulae"],
     movement: "Scapular elevation",
     bodyPart: "Traps",
-    sets: 3,
   },
   {
     name: "Rack Pull",
@@ -348,7 +310,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Gluteus maximus", "Trapezius"],
     movement: "Hip hinge",
     bodyPart: "Posterior chain",
-    sets: 4,
   },
   {
     name: "Pendlay Row",
@@ -357,7 +318,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Rhomboids", "Posterior deltoideus"],
     movement: "Horizontal pull",
     bodyPart: "Back",
-    sets: 3,
   },
   {
     name: "Incline Row",
@@ -366,7 +326,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Rhomboids", "Posterior deltoideus"],
     movement: "Horizontal pull",
     bodyPart: "Back",
-    sets: 3,
   },
   {
     name: "Cable Crossover",
@@ -375,7 +334,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Anterior deltoideus"],
     movement: "Horizontal adduction",
     bodyPart: "Chest",
-    sets: 3,
   },
   {
     name: "Pec Deck",
@@ -384,7 +342,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Anterior deltoideus"],
     movement: "Horizontal adduction",
     bodyPart: "Chest",
-    sets: 3,
   },
   {
     name: "Chest Fly",
@@ -393,7 +350,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Anterior deltoideus"],
     movement: "Horizontal adduction",
     bodyPart: "Chest",
-    sets: 3,
   },
   {
     name: "Cable Lateral Raise",
@@ -402,7 +358,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Supraspinatus"],
     movement: "Shoulder abduction",
     bodyPart: "Shoulders",
-    sets: 3,
   },
   {
     name: "Hanging Leg Raise",
@@ -411,7 +366,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Hip flexors"],
     movement: "Hip flexion",
     bodyPart: "Core",
-    sets: 3,
   },
   {
     name: "Plank",
@@ -420,7 +374,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Transversus abdominis", "Obliques"],
     movement: "Anti-extension",
     bodyPart: "Core",
-    sets: 3,
   },
   {
     name: "Russian Twist",
@@ -429,7 +382,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Rectus abdominis"],
     movement: "Trunk rotation",
     bodyPart: "Core",
-    sets: 3,
   },
   {
     name: "Cable Woodchopper",
@@ -438,7 +390,6 @@ export const EXERCISES = [
     secondaryMuscles: ["Rectus abdominis"],
     movement: "Trunk rotation",
     bodyPart: "Core",
-    sets: 3,
   },
   {
     name: "Ab Wheel Rollout",
@@ -447,6 +398,5 @@ export const EXERCISES = [
     secondaryMuscles: ["Transversus abdominis", "Hip flexors"],
     movement: "Anti-extension",
     bodyPart: "Core",
-    sets: 3,
   },
 ];
