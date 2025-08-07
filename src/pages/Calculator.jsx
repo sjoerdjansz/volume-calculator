@@ -86,7 +86,7 @@ export function Calculator() {
       ...prevState,
       {
         ...match,
-        sets: null,
+        sets: allSets,
       },
     ]);
   }
@@ -135,179 +135,191 @@ export function Calculator() {
 
   return (
     <div className={styles["workouts"]}>
-      {showModal && (
-        <AddExerciseModal
-          searchType="exercise"
-          title="Add exercise to workout"
-          searchData={EXERCISES}
-          onClose={() => setShowModal(false)}
-          addExercise={handleAddExercise}
-          workoutExercises={workoutExercises}
-          removeExercise={handleRemoveExercise}
-        />
-      )}
-      <aside>
-        <h1>Workout Templates</h1>
-        <InputWrapper maxWidth="100%">
-          <SelectInput
-            id="workouts"
-            name="workout-select"
-            options={WORKOUT_SELECT_OPTIONS}
-            placeholder="Select workout"
-            onChange={(e) => {
-              setSelectedWorkout(e.target.value);
-            }}
-            value={selectedWorkout}
+      <h1>Workout Templates</h1>
+      <div>
+        {showModal && (
+          <AddExerciseModal
+            searchType="exercise"
+            title="Add exercise to workout"
+            searchData={EXERCISES}
+            onClose={() => setShowModal(false)}
+            addExercise={handleAddExercise}
+            workoutExercises={workoutExercises}
+            removeExercise={handleRemoveExercise}
           />
-        </InputWrapper>
-      </aside>
-      <section className={styles["workouts__total-volume"]}>
-        <div>
-          <h3>Total training volume</h3>
-          <div
-            onClick={() => {
-              setToggleVolume(!toggleVolume);
-            }}
-          >
-            <span>{toggleVolume ? "Show" : "Hide"}</span>
-            {toggleVolume ? (
-              <CaretCircleUp size={20} />
-            ) : (
-              <CaretCircleDown size={20} />
-            )}
-          </div>
-        </div>
-        <div className={styles["workouts__frequency"]}>
-          <InputWrapper maxWidth="60%" direction="row">
-            <RangeInput
-              name="Frequency"
-              id="frequency"
-              hasLabel={true}
-              min="1"
-              max="7"
-              value={trainingFrequency}
-              onChange={(e) => {
-                setTrainingFrequency(e.target.value);
-              }}
-            />
-          </InputWrapper>
-          <InputWrapper maxWidth="60%" direction="row">
-            <RangeInput
-              name="Sets"
-              id="all-sets"
-              hasLabel={true}
-              min="0"
-              max="10"
-              value={allSets}
-              onChange={(e) => {
-                setAllSets(e.target.value);
-              }}
-            />
-          </InputWrapper>
-        </div>
-        {mode ? (
-          <ul
-            className={`${styles["workouts-total-volume__list"]} ${toggleVolume && styles["disabled"]}`}
-          >
-            {totalMuscleVolume &&
-              totalMuscleVolume.map((muscle, index) => {
-                return (
-                  <li
-                    className={styles["workouts-total-volume__list-item"]}
-                    key={index}
-                  >
-                    <span>
-                      {(muscle.volume * trainingFrequency).toFixed(2)}
-                    </span>
-                    <p>{muscle.muscle}</p>
-                  </li>
-                );
-              })}
-          </ul>
-        ) : (
-          <div className={styles["workouts-total-volume__list"]}>
-            <p>Add exercises and choose a mode to display muscle volume.</p>
-          </div>
         )}
-      </section>
-      <div className={styles["workouts__workout-name-container"]}>
-        <hr />
-        <h4>{workoutName ? workoutName : <Barbell size={20} />}</h4>
-        <hr />
-      </div>
-      <main className={styles["workouts-container"]}>
-        <div className={styles["workouts-container__controls"]}>
-          <InputWrapper maxWidth="100%">
-            <InputField
-              id="workout-name"
-              name="workout-name"
+        <aside>
+          <div className={styles["workouts__new-workout-container"]}>
+            <InputWrapper maxWidth="70%">
+              <SelectInput
+                id="workouts"
+                name="workout-select"
+                options={WORKOUT_SELECT_OPTIONS}
+                placeholder="Select workout"
+                onChange={(e) => {
+                  setSelectedWorkout(e.target.value);
+                }}
+                value={selectedWorkout}
+              />
+            </InputWrapper>
+            <Button
               type="text"
-              hasLabel={false}
-              placeholder="Workout name"
-              value={workoutName}
-              onChange={handleWorkoutNameChange}
+              maxWidth="30%"
+              styling="success"
+              label="New workout"
             />
-          </InputWrapper>
-          <InputWrapper maxWidth="100%">
-            <SelectInput
-              id="mode"
-              name="mode-select"
-              options={["neutral", "optimistic", "conservative"]}
-              placeholder="Choose mode"
-              onChange={(e) => {
-                setMode(e.target.value.toLowerCase());
-              }}
-              value={mode}
-            />
-          </InputWrapper>
-        </div>
-        <section className={styles["workouts-container__exercises"]}>
-          {workoutExercises.length > 0 ? (
-            workoutExercises.map((exercise, index) => {
-              return (
-                <ExerciseCard
-                  exercise={exercise}
-                  key={index}
-                  volume={
-                    singleExerciseVolumes[index] || {
-                      primary: null,
-                      secondary: null,
-                    }
-                  }
-                  onSetChange={(newSets) =>
-                    handleSetChange(exercise.name, newSets)
-                  }
-                  removeExercise={handleRemoveExercise}
-                  volumeMode={mode}
+          </div>
+          <section className={styles["workouts__total-volume"]}>
+            <div>
+              <h3>Total training volume</h3>
+              <div
+                onClick={() => {
+                  setToggleVolume(!toggleVolume);
+                }}
+              >
+                <span>{toggleVolume ? "Show" : "Hide"}</span>
+                {toggleVolume ? (
+                  <CaretCircleUp size={20} />
+                ) : (
+                  <CaretCircleDown size={20} />
+                )}
+              </div>
+            </div>
+            <div className={styles["workouts__frequency"]}>
+              <InputWrapper maxWidth="100%" direction="row">
+                <RangeInput
+                  name="Frequency"
+                  id="frequency"
+                  hasLabel={true}
+                  min="1"
+                  max="7"
+                  value={trainingFrequency}
+                  onChange={(e) => {
+                    setTrainingFrequency(e.target.value);
+                  }}
                 />
-              );
-            })
-          ) : (
-            <p className={styles["no-exercises-message"]}>
-              No exercises to display.
-            </p>
-          )}
-        </section>
-      </main>
-      <footer>
-        <Button
-          type="button"
-          maxWidth="100%"
-          disabled={false}
-          label="Add Exercise"
-          styling="primary"
-          onClick={() => {
-            setShowModal(!showModal);
-          }}
-        />
-        <Button
-          type="submit"
-          maxWidth="100%"
-          disabled={false}
-          label="Save Workout"
-          styling="success"
-        />
-      </footer>
+              </InputWrapper>
+              <InputWrapper maxWidth="100%" direction="row">
+                <RangeInput
+                  name="Sets"
+                  id="all-sets"
+                  hasLabel={true}
+                  min="0"
+                  max="10"
+                  value={allSets}
+                  onChange={(e) => {
+                    setAllSets(e.target.value);
+                  }}
+                />
+              </InputWrapper>
+            </div>
+            {mode && workoutExercises.length > 0 ? (
+              <ul
+                className={`${styles["workouts-total-volume__list"]} ${toggleVolume && styles["disabled"]}`}
+              >
+                {totalMuscleVolume &&
+                  totalMuscleVolume.map((muscle, index) => {
+                    return (
+                      <li
+                        className={styles["workouts-total-volume__list-item"]}
+                        key={index}
+                      >
+                        <span>
+                          {(muscle.volume * trainingFrequency).toFixed(2)}
+                        </span>
+                        <p>{muscle.muscle}</p>
+                      </li>
+                    );
+                  })}
+              </ul>
+            ) : (
+              <div className={styles["workouts-total-volume__list"]}>
+                <p>Add exercises and choose a mode to display muscle volume.</p>
+              </div>
+            )}
+          </section>
+
+          <div className={styles["buttons-container"]}>
+            <Button
+              type="button"
+              maxWidth="100%"
+              disabled={false}
+              label="Add Exercise"
+              styling="primary"
+              onClick={() => {
+                setShowModal(!showModal);
+              }}
+            />
+            <Button
+              type="submit"
+              maxWidth="100%"
+              disabled={false}
+              label="Save Workout"
+              styling="success"
+            />
+          </div>
+        </aside>
+
+        <main className={styles["workouts-container"]}>
+          <div className={styles["workouts__workout-name-container"]}>
+            <hr />
+            <h4>{workoutName ? workoutName : <Barbell size={20} />}</h4>
+            <hr />
+          </div>
+          <div className={styles["workouts-container__controls"]}>
+            <InputWrapper maxWidth="100%">
+              <InputField
+                id="workout-name"
+                name="workout-name"
+                type="text"
+                hasLabel={false}
+                placeholder="Workout name"
+                value={workoutName}
+                onChange={handleWorkoutNameChange}
+              />
+            </InputWrapper>
+            <InputWrapper maxWidth="100%">
+              <SelectInput
+                id="mode"
+                name="mode-select"
+                options={["neutral", "optimistic", "conservative"]}
+                placeholder="Choose mode"
+                onChange={(e) => {
+                  setMode(e.target.value.toLowerCase());
+                }}
+                value={mode}
+              />
+            </InputWrapper>
+          </div>
+          <section className={styles["workouts-container__exercises"]}>
+            {workoutExercises.length > 0 ? (
+              workoutExercises.map((exercise, index) => {
+                return (
+                  <ExerciseCard
+                    exercise={exercise}
+                    key={index}
+                    volume={
+                      singleExerciseVolumes[index] || {
+                        primary: null,
+                        secondary: null,
+                      }
+                    }
+                    onSetChange={(newSets) =>
+                      handleSetChange(exercise.name, newSets)
+                    }
+                    removeExercise={handleRemoveExercise}
+                    volumeMode={mode}
+                  />
+                );
+              })
+            ) : (
+              <p className={styles["no-exercises-message"]}>
+                No exercises to display.
+              </p>
+            )}
+          </section>
+        </main>
+      </div>
     </div>
   );
 }

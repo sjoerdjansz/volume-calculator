@@ -1,20 +1,48 @@
 .workouts {
-  height: 100%;
   display: flex;
-  width: 70%;
+  width: 100%;
   flex-direction: column;
+  height: 100%;
 }
 
+.workouts > div {
+  height: 100%;
+  display: flex;
+  width: 100%;
+  padding: var(--spacing-lg);
+  flex-direction: row;
+  gap: var(--spacing-lg);
+}
+
+h1 {
+  font-size: var(--font-size-large);
+}
+
+/* START VAN SIDE CONTENT / CONTROLS*/
 aside {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  padding-bottom: var(--spacing-md);
+  flex: 0 1 500px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-small);
+  padding: var(--spacing-md);
+  justify-content: space-between;
+  /*height: 100%;*/
+}
+
+.workouts__new-workout-container {
+  display: flex;
+  gap: var(--spacing-md);
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .workouts__total-volume {
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: var(--spacing-md);
 }
 
@@ -27,7 +55,6 @@ aside {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  height: 100%;
 }
 
 .workouts__workout-name-container > h4 {
@@ -54,26 +81,36 @@ aside {
   cursor: pointer;
 }
 
+/* door justify content blifjt main axis linksboven, align items zorgt voor geen stretch
+ en align content zorgt dat gewrapte rijen boven blijven in de container*/
 .workouts-total-volume__list {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
   gap: var(--spacing-md);
   padding: var(--spacing-md);
-  background-color: var(--color-surface);
+  background-color: var(--color-surface-variant);
   border-radius: var(--radius-small);
+  overflow-y: auto;
+  flex-direction: row;
+  max-height: 250px;
+  box-shadow: var(--shadow-elevated);
+}
+
+/* door flex neemt item nu alleen eigen breedte*/
+.workouts-total-volume__list-item {
+  display: flex;
+  font-size: var(--font-size-xsmall);
+  align-items: center;
+  flex: 0 0 auto;
+  gap: var(--spacing-sm);
 }
 
 .workouts-total-volume__list > p {
   font-size: var(--font-size-small);
   color: var(--color-text-disabled);
-}
-
-.workouts-total-volume__list-item {
-  display: flex;
-  font-size: var(--font-size-xsmall);
-  align-items: center;
-  gap: var(--spacing-sm);
-  flex: 0 1 130px;
 }
 
 .disabled {
@@ -86,21 +123,32 @@ aside {
   align-items: center;
   min-width: 3rem;
   padding: var(--spacing-sm);
-  background-color: var(--color-surface-variant);
+  background-color: var(--color-surface);
   border-radius: var(--radius-small);
 }
+
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* START VAN MAIN CONTENT */
 
 .workouts-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
   overflow: hidden;
+  flex: 2 1 auto;
+  background-color: var(--color-surface);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-small);
 }
 
 .workouts-container__controls {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
+  flex-direction: row;
+  gap: var(--spacing-md);
   padding-bottom: var(--spacing-md);
 }
 
@@ -113,7 +161,6 @@ aside {
   min-height: 0;
   flex-direction: column;
   gap: var(--spacing-md);
-  height: 100%;
   max-height: 600px;
   overflow-y: auto;
 }
@@ -123,19 +170,18 @@ aside {
   color: var(--color-text-disabled);
 }
 
-@media (max-width: 768px) {
-  .workouts {
-    width: 100%;
+@media (max-width: 1024px) {
+  .workouts > div {
+    flex-direction: column;
+    padding: var(--spacing-xs);
+    gap: var(--spacing-md);
   }
-}
 
-footer {
-  display: flex;
-  position: sticky;
-  bottom: 0;
-  z-index: 999;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  background-color: var(--color-bg);
-  padding: var(--spacing-md) 0;
+  h1 {
+    margin: var(--spacing-sm);
+  }
+
+  aside {
+    flex: 0;
+  }
 }

@@ -4,5 +4,11 @@
   align-items: center;
   padding: var(--spacing-md);
   /*border: 2px solid var(--color-accent-primary);*/
-  /*height: calc(100vh - 75px);*/
+  height: calc(100vh - 75px);
+}
+
+@media (max-width: 1024px) {
+  .page-container {
+    height: auto;
+  }
 }
