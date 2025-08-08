@@ -158,7 +158,7 @@ aside {
   font-size: var(--font-size-small);
   justify-content: flex-end;
   white-space: nowrap;
-  flex-basis: 80px;
+  flex-basis: 100px;
 }
 
 .workouts__minimize-wrapper > span {

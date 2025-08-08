@@ -1,6 +1,14 @@
 import styles from "./Button.module.css";
 
-export function Button({ disabled, label, type, maxWidth, styling, onClick }) {
+export function Button({
+  disabled,
+  label,
+  type,
+  maxWidth,
+  styling,
+  onClick,
+  icon,
+}) {
   return (
     <button
       style={maxWidth ? { maxWidth } : {}}
@@ -9,7 +17,7 @@ export function Button({ disabled, label, type, maxWidth, styling, onClick }) {
       className={`${styles.button} ${styling ? styles[styling] : ""}`}
       onClick={onClick}
     >
-      {label}
+      {label} {icon && icon}
     </button>
   );
 }

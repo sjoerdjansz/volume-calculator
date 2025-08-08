@@ -18,6 +18,7 @@ import {
   Barbell,
   CaretCircleDown,
   CaretCircleUp,
+  Eraser,
 } from "@phosphor-icons/react";
 import { RangeInput } from "../components/rangeInput/RangeInput.jsx";
 import { AddExerciseModal } from "../components/addExerciseModal/AddExerciseModal.jsx";
@@ -35,9 +36,31 @@ export function Calculator() {
   const [showModal, setShowModal] = useState(false);
   const [workoutExercises, setWorkoutExercises] = useState([]);
   const [workoutName, setWorkoutName] = useState("");
-  const [allSets, setAllSets] = useState(0);
   const [minimizeAllCards, setMinimizeAllCards] = useState(false);
   const [experienceLevel, setExperienceLevel] = useState(1);
+  const [workouts, setWorkouts] = useState(() => {
+    const data = localStorage.getItem("workouts");
+    return data ? JSON.parse(data) : [];
+  });
+
+  useEffect(() => {
+    if (!selectedWorkout) {
+      return;
+    }
+    const matchedWorkout = workouts.find(
+      (workout) => workout.name === selectedWorkout,
+    );
+
+    setWorkoutName(matchedWorkout.name);
+    setWorkoutExercises(matchedWorkout.exercises || []);
+    setTrainingFrequency(Number(matchedWorkout.frequency) || 1);
+    setExperienceLevel(Number(matchedWorkout.level) || 1);
+    setMode(matchedWorkout.mode || "");
+  }, [selectedWorkout, workouts]);
+
+  useEffect(() => {
+    localStorage.setItem("workouts", JSON.stringify(workouts));
+  }, [workouts]);
 
   useEffect(() => {
     if (!mode) {
@@ -64,17 +87,6 @@ export function Calculator() {
     setTotalMuscleVolume(totalMuscleVolumesWithColors);
     setSingleExerciseVolumes(singleExercises);
   }, [experienceLevel, mode, workoutExercises, trainingFrequency]);
-
-  useEffect(() => {
-    setWorkoutExercises((prevState) => {
-      return prevState.map((exercise) => {
-        return {
-          ...exercise,
-          sets: allSets,
-        };
-      });
-    });
-  }, [allSets]);
 
   function handleAddExercise(exercise) {
     const sanitizedExercise = exercise.trim().toLowerCase();
@@ -103,9 +115,43 @@ export function Calculator() {
       ...prevState,
       {
         ...match,
-        sets: allSets,
+        sets: 3,
       },
     ]);
+  }
+
+  function handleSaveWorkout() {
+    const newWorkout = {
+      name: workoutName || `Workout-${Date.now()}`,
+      exercises: workoutExercises,
+      frequency: Number(trainingFrequency),
+      level: Number(experienceLevel),
+      mode,
+    };
+
+    setWorkouts((prev) => {
+      // als we workout hebben geselecteerd, updaten we die
+      if (selectedWorkout) {
+        return prev.map((w) =>
+          w.name === selectedWorkout ? { ...w, ...newWorkout } : w,
+        );
+      }
+
+      setSelectedWorkout(workoutName);
+      // geen nieuwe? dan nieuwe workout toevoegen
+      return [...prev, newWorkout];
+    });
+  }
+
+  function handleStartOver() {
+    localStorage.removeItem("workouts");
+    setWorkouts([]);
+    setSelectedWorkout("");
+    setWorkoutName("");
+    setWorkoutExercises([]);
+    setTrainingFrequency(1);
+    setExperienceLevel(1);
+    setMode("");
   }
 
   function handleRemoveExercise(exercise) {
@@ -167,12 +213,21 @@ export function Calculator() {
         )}
         <aside>
           <div className={styles["workouts__new-workout-container"]}>
+            <Button
+              type="button"
+              maxWidth="30%"
+              styling="error"
+              label="Start over"
+              onClick={handleStartOver}
+              icon={<Eraser size={16} />}
+            />
+
             <InputWrapper maxWidth="100%">
               <SelectInput
                 id="workouts"
                 name="Select workout"
                 hasLabel={false}
-                options={WORKOUT_SELECT_OPTIONS}
+                options={workouts.map((workout) => workout.name)}
                 placeholder="Select workout"
                 onChange={(e) => {
                   setSelectedWorkout(e.target.value);
@@ -210,19 +265,7 @@ export function Calculator() {
                   }}
                 />
               </InputWrapper>
-              <InputWrapper maxWidth="100%" direction="row">
-                <RangeInput
-                  name="Sets"
-                  id="all-sets"
-                  hasLabel={true}
-                  min="0"
-                  max="10"
-                  value={allSets}
-                  onChange={(e) => {
-                    setAllSets(e.target.value);
-                  }}
-                />
-              </InputWrapper>
+
               <InputWrapper maxWidth="100%" direction="row">
                 <RangeInput
                   name="Level"
@@ -301,6 +344,7 @@ export function Calculator() {
               disabled={false}
               label="Save Workout"
               styling="success"
+              onClick={handleSaveWorkout}
             />
           </div>
         </aside>
@@ -341,12 +385,12 @@ export function Calculator() {
             <div className={styles["workouts__minimize-wrapper"]}>
               {minimizeAllCards ? (
                 <span onClick={() => setMinimizeAllCards(!minimizeAllCards)}>
-                  Hide all
+                  Hide details
                   <ArrowsInLineVertical size={20} />
                 </span>
               ) : (
                 <span onClick={() => setMinimizeAllCards(!minimizeAllCards)}>
-                  Show all <ArrowsOutLineVertical size={20} />
+                  Show details <ArrowsOutLineVertical size={20} />
                 </span>
               )}
             </div>
