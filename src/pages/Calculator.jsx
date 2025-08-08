@@ -12,9 +12,17 @@ import {
 import { ESTIMATE_MODES } from "../data/estimateMode.js";
 import { WORKOUT_SELECT_OPTIONS } from "../data/workoutSelectOptions.js";
 import { EXERCISES } from "../data/exercises.js";
-import { Barbell, CaretCircleDown, CaretCircleUp } from "@phosphor-icons/react";
+import {
+  ArrowsInLineVertical,
+  ArrowsOutLineVertical,
+  Barbell,
+  CaretCircleDown,
+  CaretCircleUp,
+} from "@phosphor-icons/react";
 import { RangeInput } from "../components/rangeInput/RangeInput.jsx";
 import { AddExerciseModal } from "../components/addExerciseModal/AddExerciseModal.jsx";
+import { IconToggle } from "../components/iconToggle/IconToggle.jsx";
+import { Tooltip } from "../components/tooltip/Tooltip.jsx";
 
 export function Calculator() {
   const [singleExerciseVolumes, setSingleExerciseVolumes] = useState([]);
@@ -27,6 +35,8 @@ export function Calculator() {
   const [workoutExercises, setWorkoutExercises] = useState([]);
   const [workoutName, setWorkoutName] = useState("");
   const [allSets, setAllSets] = useState(0);
+  const [minimizeAllCards, setMinimizeAllCards] = useState(false);
+  const [experienceLevel, setExperienceLevel] = useState(1);
 
   useEffect(() => {
     if (!mode) {
@@ -139,8 +149,8 @@ export function Calculator() {
       <div>
         {showModal && (
           <AddExerciseModal
-            searchType="exercise"
-            title="Add exercise to workout"
+            searchType="exercises"
+            title="Add exercises to workout"
             searchData={EXERCISES}
             onClose={() => setShowModal(false)}
             addExercise={handleAddExercise}
@@ -150,10 +160,11 @@ export function Calculator() {
         )}
         <aside>
           <div className={styles["workouts__new-workout-container"]}>
-            <InputWrapper maxWidth="70%">
+            <InputWrapper maxWidth="100%">
               <SelectInput
                 id="workouts"
-                name="workout-select"
+                name="Select workout"
+                hasLabel={false}
                 options={WORKOUT_SELECT_OPTIONS}
                 placeholder="Select workout"
                 onChange={(e) => {
@@ -162,28 +173,21 @@ export function Calculator() {
                 value={selectedWorkout}
               />
             </InputWrapper>
-            <Button
-              type="text"
-              maxWidth="30%"
-              styling="success"
-              label="New workout"
-            />
           </div>
           <section className={styles["workouts__total-volume"]}>
             <div>
               <h3>Total training volume</h3>
-              <div
-                onClick={() => {
-                  setToggleVolume(!toggleVolume);
+              <IconToggle
+                handleToggle={() => setToggleVolume(!toggleVolume)}
+                iconOne={{
+                  icon: <CaretCircleUp size={20} />,
+                  label: "Show",
                 }}
-              >
-                <span>{toggleVolume ? "Show" : "Hide"}</span>
-                {toggleVolume ? (
-                  <CaretCircleUp size={20} />
-                ) : (
-                  <CaretCircleDown size={20} />
-                )}
-              </div>
+                iconTwo={{
+                  icon: <CaretCircleDown size={20} />,
+                  label: "Hide",
+                }}
+              />
             </div>
             <div className={styles["workouts__frequency"]}>
               <InputWrapper maxWidth="100%" direction="row">
@@ -210,6 +214,28 @@ export function Calculator() {
                   onChange={(e) => {
                     setAllSets(e.target.value);
                   }}
+                />
+              </InputWrapper>
+              <InputWrapper maxWidth="100%" direction="row">
+                <RangeInput
+                  name="Level"
+                  id="client-level"
+                  hasLabel={true}
+                  min="1"
+                  max="3"
+                  value={experienceLevel}
+                  onChange={(e) => {
+                    setExperienceLevel(e.target.value);
+                  }}
+                  tooltip={
+                    <Tooltip
+                      message={[
+                        "1: Beginner",
+                        "2: Intermediate",
+                        "3: Advanced",
+                      ]}
+                    />
+                  }
                 />
               </InputWrapper>
             </div>
@@ -267,29 +293,44 @@ export function Calculator() {
             <hr />
           </div>
           <div className={styles["workouts-container__controls"]}>
-            <InputWrapper maxWidth="100%">
-              <InputField
-                id="workout-name"
-                name="workout-name"
-                type="text"
-                hasLabel={false}
-                placeholder="Workout name"
-                value={workoutName}
-                onChange={handleWorkoutNameChange}
-              />
-            </InputWrapper>
-            <InputWrapper maxWidth="100%">
-              <SelectInput
-                id="mode"
-                name="mode-select"
-                options={["neutral", "optimistic", "conservative"]}
-                placeholder="Choose mode"
-                onChange={(e) => {
-                  setMode(e.target.value.toLowerCase());
-                }}
-                value={mode}
-              />
-            </InputWrapper>
+            <div>
+              <InputWrapper maxWidth="100%">
+                <InputField
+                  id="workout-name"
+                  name="workout-name"
+                  type="text"
+                  hasLabel={false}
+                  placeholder="Workout name"
+                  value={workoutName}
+                  onChange={handleWorkoutNameChange}
+                />
+              </InputWrapper>
+              <InputWrapper maxWidth="100%">
+                <SelectInput
+                  id="mode"
+                  name="Mode"
+                  hasLabel={false}
+                  options={["neutral", "optimistic", "conservative"]}
+                  placeholder="Choose mode"
+                  onChange={(e) => {
+                    setMode(e.target.value.toLowerCase());
+                  }}
+                  value={mode}
+                />
+              </InputWrapper>
+            </div>
+            <div className={styles["workouts__minimize-wrapper"]}>
+              {minimizeAllCards ? (
+                <span onClick={() => setMinimizeAllCards(!minimizeAllCards)}>
+                  Hide all
+                  <ArrowsInLineVertical size={20} />
+                </span>
+              ) : (
+                <span onClick={() => setMinimizeAllCards(!minimizeAllCards)}>
+                  Show all <ArrowsOutLineVertical size={20} />
+                </span>
+              )}
+            </div>
           </div>
           <section className={styles["workouts-container__exercises"]}>
             {workoutExercises.length > 0 ? (
@@ -309,6 +350,7 @@ export function Calculator() {
                     }
                     removeExercise={handleRemoveExercise}
                     volumeMode={mode}
+                    minimize={minimizeAllCards}
                   />
                 );
               })

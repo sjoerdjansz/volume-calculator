@@ -7,9 +7,11 @@ export function SelectInput({
   placeholder,
   onChange,
   value,
+  hasLabel,
 }) {
   return (
     <>
+      {hasLabel && <label htmlFor={id}>{name}</label>}
       <select value={value || ""} name={name} id={id} onChange={onChange}>
         {placeholder && (
           <option disabled value="">

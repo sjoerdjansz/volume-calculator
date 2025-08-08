@@ -1,0 +1,44 @@
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip > span {
+  cursor: pointer;
+  color: var(--color-text-secondary);
+}
+
+.tooltip > span:hover {
+  color: var(--color-accent-secondary);
+}
+
+.tooltip_message {
+  position: absolute;
+  background-color: var(--color-bg);
+  padding: var(--spacing-md);
+  bottom: calc(100% + 0.5rem);
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  border-radius: var(--radius-small);
+  box-shadow: var(--shadow-elevated);
+  flex: 1;
+  z-index: 1000;
+  width: max-content;
+  min-width: 12rem;
+  max-width: min(40rem, 90vw);
+  max-height: 8rem;
+  overflow-y: auto;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.tooltip_message:hover {
+  background-color: var(--color-surface);
+  cursor: pointer;
+}
+
+.tooltip__message-items {
+  white-space: normal;
+}

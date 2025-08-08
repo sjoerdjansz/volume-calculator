@@ -1,0 +1,18 @@
+.icon-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon-toggle > :first-child {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.icon-toggle > :first-child:hover {
+  color: var(--color-accent-secondary);
+}

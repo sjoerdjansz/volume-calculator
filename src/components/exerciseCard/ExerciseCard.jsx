@@ -11,6 +11,7 @@ export function ExerciseCard({
   onSetChange,
   removeExercise,
   volumeMode,
+  minimize,
 }) {
   const [volumePercentages, setVolumePercentages] = useState({});
 
@@ -49,34 +50,37 @@ export function ExerciseCard({
               </InputWrapper>
             </div>
           </div>
-          <ul className={styles["exercise-card__details-wrapper"]}>
-            <li className={styles.primary}>
-              <p>Primary</p>
-              <p>{exercise.primaryMuscle}</p>
-              <span>
-                {volumePercentages.primary
-                  ? volumePercentages.primary * 100
-                  : 0}
-                %
-              </span>
-              <span>{volume.primary ? volume.primary : "–"} pts</span>
-            </li>
-            {exercise.secondaryMuscles?.map((muscle, index) => {
-              return (
-                <li key={index} className={styles.secondary}>
-                  <p>Secondary</p>
-                  <p>{muscle}</p>
-                  <span>
-                    {volumePercentages.secondary
-                      ? volumePercentages.secondary * 100
-                      : 0}
-                    %
-                  </span>
-                  <span>{volume.secondary ? volume.secondary : "–"} pts</span>
-                </li>
-              );
-            })}
-          </ul>
+
+          {minimize && (
+            <ul className={styles["exercise-card__details-wrapper"]}>
+              <li className={styles.primary}>
+                <p>Primary</p>
+                <p>{exercise.primaryMuscle}</p>
+                <span>
+                  {volumePercentages.primary
+                    ? volumePercentages.primary * 100
+                    : 0}
+                  %
+                </span>
+                <span>{volume.primary ? volume.primary : "–"} pts</span>
+              </li>
+              {exercise.secondaryMuscles?.map((muscle, index) => {
+                return (
+                  <li key={index} className={styles.secondary}>
+                    <p>Secondary</p>
+                    <p>{muscle}</p>
+                    <span>
+                      {volumePercentages.secondary
+                        ? volumePercentages.secondary * 100
+                        : 0}
+                      %
+                    </span>
+                    <span>{volume.secondary ? volume.secondary : "–"} pts</span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </>
       ) : (
         <p>No workout data to display.</p>

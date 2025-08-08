@@ -9,6 +9,7 @@
   cursor: pointer;
   box-shadow: var(--shadow-elevated);
   outline: none;
+  height: 2.3rem;
 }
 
 .primary {

@@ -8,11 +8,10 @@ export function InputField({
   type,
   placeholder,
   onChange,
-  icon,
 }) {
   return (
     <>
-      {hasLabel && <label htmlFor={name}>{name}</label>}
+      {hasLabel && <label htmlFor={id}>{name}</label>}
 
       <input
         type={type}

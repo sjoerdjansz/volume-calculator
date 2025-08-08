@@ -1,9 +1,23 @@
 import styles from "./RangeInput.module.css";
 
-export function RangeInput({ hasLabel, id, name, onChange, value, min, max }) {
+export function RangeInput({
+  hasLabel,
+  id,
+  name,
+  onChange,
+  value,
+  min,
+  max,
+  tooltip,
+}) {
   return (
     <div className={styles["range-wrapper"]}>
-      {hasLabel && <label htmlFor={name}>{name}</label>}
+      {hasLabel && (
+        <label htmlFor={id}>
+          {name}
+          {tooltip}
+        </label>
+      )}
       <input
         type="range"
         name={name}

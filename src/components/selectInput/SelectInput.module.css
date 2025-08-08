@@ -1,5 +1,6 @@
 select {
   padding: var(--spacing-sm);
+  height: 2.3rem;
   width: 100%;
   border: none;
   border-radius: var(--radius-small);
@@ -8,4 +9,7 @@ select {
   outline: none;
   text-transform: capitalize;
   box-shadow: var(--shadow-elevated);
+  font: inherit;
+  font-size: var(--font-size-base);
+  line-height: 2.3rem;
 }

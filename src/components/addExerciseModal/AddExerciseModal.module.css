@@ -141,3 +141,7 @@
 .modal__result > :nth-child(1) {
   color: var(--color-text-disabled);
 }
+
+.already-in-workout {
+  color: var(--color-success);
+}

@@ -79,8 +79,26 @@ export function AddExerciseModal({
               <ul className={styles["modal__search-results"]}>
                 {exercises &&
                   exercises.map((exercise, index) => {
+                    const alreadyInWorkout = workoutExercises.some(
+                      (item) => item.name === exercise.name,
+                    );
+
+                    if (!alreadyInWorkout) {
+                      return (
+                        <li
+                          key={index}
+                          onClick={() => addExercise(exercise.name)}
+                        >
+                          <p className={styles["modal__result"]}>
+                            {exercise.name}{" "}
+                            <span>({exercise.primaryMuscle})</span>
+                          </p>
+                        </li>
+                      );
+                    }
                     return (
                       <li
+                        className={styles["already-in-workout"]}
                         key={index}
                         onClick={() => addExercise(exercise.name)}
                       >
