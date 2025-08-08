@@ -23,6 +23,7 @@ import { RangeInput } from "../components/rangeInput/RangeInput.jsx";
 import { AddExerciseModal } from "../components/addExerciseModal/AddExerciseModal.jsx";
 import { IconToggle } from "../components/iconToggle/IconToggle.jsx";
 import { Tooltip } from "../components/tooltip/Tooltip.jsx";
+import { calculateVolumeByLevel } from "../helpers/calculateVolumeByLevel.js";
 
 export function Calculator() {
   const [singleExerciseVolumes, setSingleExerciseVolumes] = useState([]);
@@ -54,9 +55,15 @@ export function Calculator() {
       workoutExercises,
     );
 
-    setTotalMuscleVolume(totalMuscleVolumes);
+    const totalMuscleVolumesWithColors = calculateVolumeByLevel(
+      experienceLevel,
+      totalMuscleVolumes,
+      trainingFrequency,
+    );
+
+    setTotalMuscleVolume(totalMuscleVolumesWithColors);
     setSingleExerciseVolumes(singleExercises);
-  }, [mode, workoutExercises]);
+  }, [experienceLevel, mode, workoutExercises, trainingFrequency]);
 
   useEffect(() => {
     setWorkoutExercises((prevState) => {
@@ -225,7 +232,7 @@ export function Calculator() {
                   max="3"
                   value={experienceLevel}
                   onChange={(e) => {
-                    setExperienceLevel(e.target.value);
+                    setExperienceLevel(Number(e.target.value));
                   }}
                   tooltip={
                     <Tooltip
@@ -245,12 +252,24 @@ export function Calculator() {
               >
                 {totalMuscleVolume &&
                   totalMuscleVolume.map((muscle, index) => {
+                    const hue = 123;
+                    const sat = 38;
+                    const lightness = muscle.hslLightness;
                     return (
                       <li
                         className={styles["workouts-total-volume__list-item"]}
                         key={index}
                       >
-                        <span>
+                        <span
+                          style={{
+                            backgroundColor:
+                              muscle.hslLightness !== null
+                                ? `hsl(${hue} ${sat}% ${lightness}%)`
+                                : "",
+                            color:
+                              muscle.status === "above" ? "#ef5350" : "inherit",
+                          }}
+                        >
                           {(muscle.volume * trainingFrequency).toFixed(2)}
                         </span>
                         <p>{muscle.muscle}</p>
