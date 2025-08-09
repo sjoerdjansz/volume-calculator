@@ -1,0 +1,114 @@
+/* START VAN SIDE CONTENT / CONTROLS*/
+aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  flex: 0 1 500px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-small);
+  padding: var(--spacing-md);
+  justify-content: space-between;
+  /*height: 100%;*/
+}
+
+.workouts__new-workout-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.workouts__new-workout-container > div {
+  width: 100%;
+}
+
+.workouts__new-workout-container > :first-child {
+  display: inline-flex;
+  gap: var(--spacing-md);
+}
+
+.workouts__total-volume {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--spacing-md);
+}
+
+.workouts__frequency {
+  font-size: var(--font-size-small);
+}
+
+.workouts__controls {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--spacing-md);
+}
+
+.workouts__controls > :first-child {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: var(--spacing-md);
+}
+
+.workouts__subtitle {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.workouts__total-volume > :first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* door justify content blijft main axis linksboven, align items zorgt voor geen stretch
+ en align content zorgt dat gewrapte rijen boven blijven in de container*/
+.workouts-total-volume__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--color-surface-variant);
+  border-radius: var(--radius-small);
+  overflow-y: auto;
+  flex-direction: row;
+  max-height: 250px;
+  box-shadow: var(--shadow-elevated);
+}
+
+/* door flex neemt item nu alleen eigen breedte*/
+.workouts-total-volume__list-item {
+  display: flex;
+  font-size: var(--font-size-xsmall);
+  align-items: center;
+  flex: 0 0 auto;
+  gap: var(--spacing-sm);
+}
+
+.workouts-total-volume__list > p {
+  font-size: var(--font-size-small);
+  color: var(--color-text-disabled);
+}
+
+.disabled {
+  display: none;
+}
+
+.workouts-total-volume__list-item > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 3rem;
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-small);
+}

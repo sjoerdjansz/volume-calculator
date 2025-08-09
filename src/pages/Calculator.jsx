@@ -1,8 +1,5 @@
 import styles from "./Calculator.module.css";
-import { SelectInput } from "../components/selectInput/SelectInput.jsx";
-import { InputWrapper } from "../components/InputWrapper/InputWrapper.jsx";
-import { InputField } from "../components/inputField/InputField.jsx";
-import { Button } from "../components/button/Button.jsx";
+
 import { ExerciseCard } from "../components/exerciseCard/ExerciseCard.jsx";
 import { useEffect, useState } from "react";
 import {
@@ -10,38 +7,29 @@ import {
   calculateTotalVolumes,
 } from "../helpers/calculateVolume.js";
 import { ESTIMATE_MODES } from "../data/estimateMode.js";
-import { WORKOUT_SELECT_OPTIONS } from "../data/workoutSelectOptions.js";
 import { EXERCISES } from "../data/exercises.js";
 import {
   ArrowsInLineVertical,
   ArrowsOutLineVertical,
   Barbell,
-  CaretCircleDown,
-  CaretCircleUp,
-  Eraser,
 } from "@phosphor-icons/react";
-import { RangeInput } from "../components/rangeInput/RangeInput.jsx";
 import { AddExerciseModal } from "../components/addExerciseModal/AddExerciseModal.jsx";
-import { IconToggle } from "../components/iconToggle/IconToggle.jsx";
-import { Tooltip } from "../components/tooltip/Tooltip.jsx";
 import { calculateVolumeByLevel } from "../helpers/calculateVolumeByLevel.js";
+import { CalculatorSidebar } from "../components/calculatorSidebar/CalculatorSidebar.jsx";
 
 export function Calculator() {
   const [singleExerciseVolumes, setSingleExerciseVolumes] = useState([]);
   const [mode, setMode] = useState("");
   const [selectedWorkout, setSelectedWorkout] = useState("");
+  // Contains the total muscle volume per muscle
   const [totalMuscleVolume, setTotalMuscleVolume] = useState([]);
-  const [toggleVolume, setToggleVolume] = useState(false);
   const [trainingFrequency, setTrainingFrequency] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [workoutExercises, setWorkoutExercises] = useState([]);
   const [workoutName, setWorkoutName] = useState("");
   const [minimizeAllCards, setMinimizeAllCards] = useState(false);
   const [experienceLevel, setExperienceLevel] = useState(1);
-  const [workouts, setWorkouts] = useState(() => {
-    const data = localStorage.getItem("workouts");
-    return data ? JSON.parse(data) : [];
-  });
+  const [workouts, setWorkouts] = useState([]);
 
   useEffect(() => {
     if (!selectedWorkout) {
@@ -50,7 +38,10 @@ export function Calculator() {
     const matchedWorkout = workouts.find(
       (workout) => workout.name === selectedWorkout,
     );
-
+    if (!matchedWorkout) {
+      console.log("in error no matched workout: ", workouts);
+      return;
+    }
     setWorkoutName(matchedWorkout.name);
     setWorkoutExercises(matchedWorkout.exercises || []);
     setTrainingFrequency(Number(matchedWorkout.frequency) || 1);
@@ -58,12 +49,11 @@ export function Calculator() {
     setMode(matchedWorkout.mode || "");
   }, [selectedWorkout, workouts]);
 
-  useEffect(() => {
-    localStorage.setItem("workouts", JSON.stringify(workouts));
-  }, [workouts]);
-
+  // calculate volumes if there is a mode selected. Updated with dependencies
   useEffect(() => {
     if (!mode) {
+      setTotalMuscleVolume([]);
+      setSingleExerciseVolumes([]);
       return;
     }
 
@@ -88,6 +78,7 @@ export function Calculator() {
     setSingleExerciseVolumes(singleExercises);
   }, [experienceLevel, mode, workoutExercises, trainingFrequency]);
 
+  // add exercise to workout, still uses name to match (TODO: update to ID).
   function handleAddExercise(exercise) {
     const sanitizedExercise = exercise.trim().toLowerCase();
 
@@ -115,13 +106,20 @@ export function Calculator() {
       ...prevState,
       {
         ...match,
-        sets: 3,
+        sets: 3, // set 3 sets as basic value
       },
     ]);
   }
 
-  function handleSaveWorkout() {
+  // TODO: Make save and delete workout functions
+  function handleSaveWorkout(e) {
+    e.preventDefault();
+
+    console.log("Save workout clicked");
+
+    // make object with all details for the workout
     const newWorkout = {
+      id: Date.now(),
       name: workoutName || `Workout-${Date.now()}`,
       exercises: workoutExercises,
       frequency: Number(trainingFrequency),
@@ -129,22 +127,23 @@ export function Calculator() {
       mode,
     };
 
-    setWorkouts((prev) => {
-      // als we workout hebben geselecteerd, updaten we die
-      if (selectedWorkout) {
-        return prev.map((w) =>
-          w.name === selectedWorkout ? { ...w, ...newWorkout } : w,
-        );
-      }
-
-      setSelectedWorkout(workoutName);
-      // geen nieuwe? dan nieuwe workout toevoegen
-      return [...prev, newWorkout];
-    });
+    // TODO: make add workout flow
+    // 1. check if workout name (better is ID, because names can be same) is duplicate.
+    // If yes, update the workout
+    // 2. if not a duplicate, save new workout
+    // 3. Update state so the saved workout shows in the select field
+    // 4. make sure workout gets added to database (or localstorage)
   }
 
-  function handleStartOver() {
-    localStorage.removeItem("workouts");
+  // Delete workout and reset state
+  function handleDeleteWorkout() {
+    // 1. Search for matching workout ID in workouts list
+    // 2. If found remove the workout from the list and update the local storage/database
+    // 3. reset state
+
+    console.log("Delete workout clicked");
+
+    // Reset state
     setWorkouts([]);
     setSelectedWorkout("");
     setWorkoutName("");
@@ -162,6 +161,7 @@ export function Calculator() {
     setWorkoutExercises(newWorkout);
   }
 
+  // TODO: make sure the exercise is selected by ID not name
   function handleSetChange(name, newSets) {
     if (newSets < 0) {
       return;
@@ -174,13 +174,14 @@ export function Calculator() {
       // dat principe niet honoreren zorgt dat react feitelijk hetzelfde object krijgt
       // het verschil niet ziet en geen re-render doet
       return prevState.map((exercise) => {
-        // als de namen overeenkomen returnen we een kopie van de exercise met de sets
+        // als de namen (TODO: moet id's worden) overeenkomen returnen we een kopie van
+        //  de exercise met de sets
         return exercise.name === name
           ? {
               ...exercise,
               sets: newSets,
             }
-          : // de niet matches returnen we as is
+          : // de niet matches returnen we 'as is'
             exercise;
       });
     });
@@ -193,7 +194,7 @@ export function Calculator() {
       return;
     }
 
-    setWorkoutName(name);
+    setWorkoutName(name.trim());
   }
 
   return (
@@ -211,189 +212,42 @@ export function Calculator() {
             removeExercise={handleRemoveExercise}
           />
         )}
-        <aside>
-          <div className={styles["workouts__new-workout-container"]}>
-            <Button
-              type="button"
-              maxWidth="30%"
-              styling="error"
-              label="Start over"
-              onClick={handleStartOver}
-              icon={<Eraser size={16} />}
-            />
-
-            <InputWrapper maxWidth="100%">
-              <SelectInput
-                id="workouts"
-                name="Select workout"
-                hasLabel={false}
-                options={workouts.map((workout) => workout.name)}
-                placeholder="Select workout"
-                onChange={(e) => {
-                  setSelectedWorkout(e.target.value);
-                }}
-                value={selectedWorkout}
-              />
-            </InputWrapper>
-          </div>
-          <section className={styles["workouts__total-volume"]}>
-            <div>
-              <h3>Total training volume</h3>
-              <IconToggle
-                handleToggle={() => setToggleVolume(!toggleVolume)}
-                iconOne={{
-                  icon: <CaretCircleUp size={20} />,
-                  label: "Show",
-                }}
-                iconTwo={{
-                  icon: <CaretCircleDown size={20} />,
-                  label: "Hide",
-                }}
-              />
-            </div>
-            <div className={styles["workouts__frequency"]}>
-              <InputWrapper maxWidth="100%" direction="row">
-                <RangeInput
-                  name="Frequency"
-                  id="frequency"
-                  hasLabel={true}
-                  min="1"
-                  max="7"
-                  value={trainingFrequency}
-                  onChange={(e) => {
-                    setTrainingFrequency(e.target.value);
-                  }}
-                />
-              </InputWrapper>
-
-              <InputWrapper maxWidth="100%" direction="row">
-                <RangeInput
-                  name="Level"
-                  id="client-level"
-                  hasLabel={true}
-                  min="1"
-                  max="3"
-                  value={experienceLevel}
-                  onChange={(e) => {
-                    setExperienceLevel(Number(e.target.value));
-                  }}
-                  tooltip={
-                    <Tooltip
-                      message={[
-                        "1: Beginner",
-                        "2: Intermediate",
-                        "3: Advanced",
-                      ]}
-                    />
-                  }
-                />
-              </InputWrapper>
-            </div>
-            {mode && workoutExercises.length > 0 ? (
-              <ul
-                className={`${styles["workouts-total-volume__list"]} ${toggleVolume && styles["disabled"]}`}
-              >
-                {totalMuscleVolume &&
-                  totalMuscleVolume.map((muscle, index) => {
-                    const hue = 123;
-                    const sat = 38;
-                    const lightness = muscle.hslLightness;
-                    return (
-                      <li
-                        className={styles["workouts-total-volume__list-item"]}
-                        key={index}
-                      >
-                        <span
-                          style={{
-                            backgroundColor:
-                              muscle.hslLightness !== null
-                                ? `hsl(${hue} ${sat}% ${lightness}%)`
-                                : "",
-                            color:
-                              muscle.status === "above" ? "#ef5350" : "inherit",
-                          }}
-                        >
-                          {(muscle.volume * trainingFrequency).toFixed(2)}
-                        </span>
-                        <p>{muscle.muscle}</p>
-                      </li>
-                    );
-                  })}
-              </ul>
-            ) : (
-              <div className={styles["workouts-total-volume__list"]}>
-                <p>Add exercises and choose a mode to display muscle volume.</p>
-              </div>
-            )}
-          </section>
-
-          <div className={styles["buttons-container"]}>
-            <Button
-              type="button"
-              maxWidth="100%"
-              disabled={false}
-              label="Add Exercise"
-              styling="primary"
-              onClick={() => {
-                setShowModal(!showModal);
-              }}
-            />
-            <Button
-              type="submit"
-              maxWidth="100%"
-              disabled={false}
-              label="Save Workout"
-              styling="success"
-              onClick={handleSaveWorkout}
-            />
-          </div>
-        </aside>
-
+        <CalculatorSidebar
+          onWorkoutNameChange={handleWorkoutNameChange}
+          workoutName={workoutName}
+          workouts={workouts}
+          onStartOver={handleDeleteWorkout}
+          mode={mode}
+          onModeChange={setMode}
+          selectedWorkout={selectedWorkout}
+          onSelectWorkout={setSelectedWorkout}
+          trainingFrequency={trainingFrequency}
+          onTrainingFrequencyChange={setTrainingFrequency}
+          experienceLevel={experienceLevel}
+          onExperienceLevelChange={setExperienceLevel}
+          workoutExercises={workoutExercises}
+          totalMuscleVolume={totalMuscleVolume}
+          onSaveWorkout={handleSaveWorkout}
+          showModal={showModal}
+          onShowModal={setShowModal}
+        />
         <main className={styles["workouts-container"]}>
           <div className={styles["workouts__workout-name-container"]}>
             <hr />
             <h4>{workoutName ? workoutName : <Barbell size={20} />}</h4>
             <hr />
           </div>
-          <div className={styles["workouts-container__controls"]}>
-            <div>
-              <InputWrapper maxWidth="100%">
-                <InputField
-                  id="workout-name"
-                  name="workout-name"
-                  type="text"
-                  hasLabel={false}
-                  placeholder="Workout name"
-                  value={workoutName}
-                  onChange={handleWorkoutNameChange}
-                />
-              </InputWrapper>
-              <InputWrapper maxWidth="100%">
-                <SelectInput
-                  id="mode"
-                  name="Mode"
-                  hasLabel={false}
-                  options={["neutral", "optimistic", "conservative"]}
-                  placeholder="Choose mode"
-                  onChange={(e) => {
-                    setMode(e.target.value.toLowerCase());
-                  }}
-                  value={mode}
-                />
-              </InputWrapper>
-            </div>
-            <div className={styles["workouts__minimize-wrapper"]}>
-              {minimizeAllCards ? (
-                <span onClick={() => setMinimizeAllCards(!minimizeAllCards)}>
-                  Hide details
-                  <ArrowsInLineVertical size={20} />
-                </span>
-              ) : (
-                <span onClick={() => setMinimizeAllCards(!minimizeAllCards)}>
-                  Show details <ArrowsOutLineVertical size={20} />
-                </span>
-              )}
-            </div>
+          <div className={styles["workouts__minimize-wrapper"]}>
+            {minimizeAllCards ? (
+              <span onClick={() => setMinimizeAllCards(!minimizeAllCards)}>
+                Hide details
+                <ArrowsInLineVertical size={20} />
+              </span>
+            ) : (
+              <span onClick={() => setMinimizeAllCards(!minimizeAllCards)}>
+                Show details <ArrowsOutLineVertical size={20} />
+              </span>
+            )}
           </div>
           <section className={styles["workouts-container__exercises"]}>
             {workoutExercises.length > 0 ? (

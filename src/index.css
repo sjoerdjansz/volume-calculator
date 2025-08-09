@@ -4,28 +4,30 @@
    Theme Variables
    ======================================== */
 
+/* Meeste variabelen uit simplicity sake door chatgpt met wat kleine aanpassingen waar nodig*/
+
 :root {
-  /* Base Colors */
-  --color-bg: #121212;
-  --color-surface: #1e1e1e;
-  --color-surface-variant: #2a2a2a;
-  --color-border: #333333;
+  /* Base Colors (mid-tone neutral) */
+  --color-bg: #2c2f33; /* diepe grijsblauw basis */
+  --color-surface: #373b40; /* iets lichter voor kaarten/panelen */
+  --color-surface-variant: #44484d; /* subtiel contrastvlak */
+  --color-border: #555a60; /* zachte grijs voor randen */
 
   /* Text Colors */
-  --color-text-primary: #e0e0e0;
-  --color-text-secondary: #b0b0b0;
-  --color-text-disabled: rgba(224, 224, 224, 0.38);
+  --color-text-primary: #e6e8eb; /* bijna-wit, niet fel */
+  --color-text-secondary: #b3b7bc; /* koel grijsblauw */
+  --color-text-disabled: rgba(230, 232, 235, 0.38);
 
-  /* Accent Colors */
-  --color-accent-primary: #4fc3f7;
-  --color-accent-primary-hover: #81d4fa;
-  --color-accent-primary-focus: #29b6f6;
-  --color-accent-primary-disabled: rgba(79, 195, 247, 0.4);
+  /* Accent Colors (fris contrast met warm amber) */
+  --color-accent-primary: #4a90e2; /* gedempt, helder blauw */
+  --color-accent-primary-hover: #5aa0ee; /* iets lichter bij hover */
+  --color-accent-primary-focus: #3e7ccc; /* iets dieper bij focus */
+  --color-accent-primary-disabled: rgba(74, 144, 226, 0.4);
 
-  --color-accent-secondary: #ff9800;
-  --color-accent-secondary-hover: #ffb74d;
-  --color-accent-secondary-focus: #fb8c00;
-  --color-accent-secondary-disabled: rgba(255, 152, 0, 0.4);
+  --color-accent-secondary: #ffb74d; /* warme amber */
+  --color-accent-secondary-hover: #ffc46a; /* iets lichter */
+  --color-accent-secondary-focus: #e6a13f; /* iets donkerder */
+  --color-accent-secondary-disabled: rgba(255, 183, 77, 0.4);
 
   /* State Colors */
   --color-error: #ef5350;
