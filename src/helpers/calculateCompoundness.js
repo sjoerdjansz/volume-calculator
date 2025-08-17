@@ -120,7 +120,6 @@ export function calculateCompoundness(data) {
       muscleScore,
     };
   });
-  console.log(mappedList);
 
   // als true geven we de array van exercises terug, anders moeten we even item [0] van het object
   // teruggeven, wat ook een array is maar verstopt binnen het object

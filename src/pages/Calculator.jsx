@@ -21,19 +21,28 @@ import { createWorkout } from "../helpers/createWorkout.js";
 import { MANDATORY_GROUPS } from "../data/mandatoryGroups.js";
 import { calculateCompoundness } from "../helpers/calculateCompoundness.js";
 import { sortExercises } from "../helpers/sortExercises.js";
+import { Snackbar } from "../components/snackbar/Snackbar.jsx";
 
 export function Calculator() {
-  const [singleExerciseVolumes, setSingleExerciseVolumes] = useState([]);
-  const [mode, setMode] = useState("");
-  const [selectedWorkout, setSelectedWorkout] = useState("");
-  // Contains the total muscle volume per muscle
-  const [totalMuscleVolume, setTotalMuscleVolume] = useState([]);
-  const [trainingFrequency, setTrainingFrequency] = useState(1);
-  const [showModal, setShowModal] = useState(false);
   const [workoutExercises, setWorkoutExercises] = useState([]);
+  const [singleExerciseVolumes, setSingleExerciseVolumes] = useState([]); // volume per individual exercise
+  const [totalMuscleVolume, setTotalMuscleVolume] = useState([]); // total muscle volume per muscle
+  // UI states
+  const [minimizeAllCards, setMinimizeAllCards] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [toggleSnackbar, setToggleSnackbar] = useState({
+    open: false,
+    message: "",
+    status: "",
+    time: "",
+  });
+  // Settings/controls states
   const [workoutName, setWorkoutName] = useState("");
-  const [minimizeAllCards, setMinimizeAllCards] = useState(false);
+  const [mode, setMode] = useState("");
   const [experienceLevel, setExperienceLevel] = useState("");
+  const [trainingFrequency, setTrainingFrequency] = useState(1);
+  // Workouts that are being persisted to localstorage
+  const [selectedWorkout, setSelectedWorkout] = useState("");
   const [workouts, setWorkouts] = useState([]);
 
   // TODO: useeffect heeft nu weinig zin. On load checkt die of er een workout is geselecteerd
@@ -161,6 +170,40 @@ export function Calculator() {
     // 2. if not a duplicate, save new workout
     // 3. Update state so the saved workout shows in the select field
     // 4. make sure workout gets added to database (or localstorage)
+
+    const hasDuplicateName = workouts.find((item) => {
+      return item.name === newWorkout.name;
+    });
+
+    if (hasDuplicateName) {
+      console.warn("Workout name already taken");
+      setToggleSnackbar({
+        open: true,
+        message: "Workout name already exists",
+        status: "error",
+      });
+      return;
+    }
+
+    // maybe add the UX option for user to overwrite/save or cancel and adjust name
+    // Now we auto overwrite
+    // we gebruiken de prevState om te checken of we moeten overwriten of toevoegen
+    setWorkouts((prevState) => {
+      const exists = prevState.find((item) => item.name === newWorkout.name);
+
+      // als de workout al bestaat  geven we de nieuwe workout (versie) mee. Zo niet, dan blijft de oude
+      // versie (item) staat.
+      if (exists) {
+        return prevState.map((item) => {
+          console.warn("Workout id already exists, we overwrite");
+
+          return item.id === newWorkout.id ? newWorkout : item;
+        });
+        // retourneer de vorige state plus de nieuwe workout als er geen overwrite is
+      } else {
+        return [...prevState, newWorkout];
+      }
+    });
   }
 
   // Delete workout and reset state
@@ -186,6 +229,12 @@ export function Calculator() {
       return ex.name !== exercise;
     });
 
+    setToggleSnackbar({
+      open: true,
+      message: `${exercise} deleted`,
+      status: "warning",
+      time: 1500,
+    });
     setWorkoutExercises(newWorkout);
   }
 
@@ -227,8 +276,21 @@ export function Calculator() {
 
   return (
     <div className={styles["workouts"]}>
+      <Snackbar
+        open={toggleSnackbar.open}
+        message={toggleSnackbar.message}
+        status={toggleSnackbar.status}
+        time={toggleSnackbar.time}
+        onClose={() =>
+          setToggleSnackbar((snack) => ({
+            ...snack,
+            open: false,
+          }))
+        }
+      />
       <h1>Workout Templates</h1>
-      <div>
+
+      <div className={styles["workouts__content"]}>
         {showModal && (
           <AddExerciseModal
             searchType="exercises"

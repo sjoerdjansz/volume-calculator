@@ -3,9 +3,10 @@
   width: 100%;
   flex-direction: column;
   height: 100%;
+  position: relative;
 }
 
-.workouts > div {
+.workouts__content {
   min-height: 100%;
   display: flex;
   width: 100%;
