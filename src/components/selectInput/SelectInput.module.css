@@ -13,3 +13,10 @@ select {
   font-size: var(--font-size-base);
   line-height: 2.3rem;
 }
+
+.select-label {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  flex: 0 0 100px;
+}

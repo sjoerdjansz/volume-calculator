@@ -11,7 +11,7 @@ const SET_RANGES = {
   },
   3: {
     low: 15,
-    high: 25,
+    high: 22,
     label: "advanced",
   },
 };
@@ -43,7 +43,11 @@ function softNormalize(volume, low, high) {
 }
 
 export function calculateVolumeByLevel(trainingLevel, data, tFrequency) {
-  const { low, high } = SET_RANGES[trainingLevel];
+  if (!trainingLevel || trainingLevel === 0) {
+    return;
+  }
+
+  const { low, high } = SET_RANGES[Number(trainingLevel)];
 
   const average = (high + low) / 2;
 
@@ -62,7 +66,7 @@ export function calculateVolumeByLevel(trainingLevel, data, tFrequency) {
     let lightness = null;
 
     if (inRange) {
-      norm = normalizedRange(weeklyVolume, low, high);
+      norm = softNormalize(weeklyVolume, low, high);
       lightness = getLightnessValue(norm, 30, 20);
     }
 

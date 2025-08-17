@@ -13,6 +13,7 @@ import { IconToggle } from "../iconToggle/IconToggle.jsx";
 import { RangeInput } from "../rangeInput/RangeInput.jsx";
 import { Tooltip } from "../tooltip/Tooltip.jsx";
 import { useState } from "react";
+import { EXPERIENCE_LEVELS } from "../../data/experienceLevels.js";
 
 export function CalculatorSidebar({
   workouts,
@@ -32,6 +33,7 @@ export function CalculatorSidebar({
   onSaveWorkout,
   onShowModal,
   showModal,
+  handleGeneratedWorkout,
 }) {
   const [toggleVolume, setToggleVolume] = useState(false);
 
@@ -51,7 +53,7 @@ export function CalculatorSidebar({
             type="button"
             maxWidth="100%"
             styling="error"
-            label="Delete Workouts"
+            label="Delete Workout"
             onClick={onStartOver}
             icon={<Eraser size={16} />}
           />
@@ -101,7 +103,15 @@ export function CalculatorSidebar({
             </InputWrapper>
           </div>
           <div className={styles["workouts__subtitle"]}>
-            <h3>Total training volume</h3>
+            <div>
+              <h3>Total training volume</h3>
+              <Tooltip
+                message="Total weekly volume per muscle based on training frequency and
+          experience. Red is too high. Light green means the volume is near the
+          upper limit of the recommended range. Dark green is closer to the
+          lower limit."
+              />
+            </div>
             <IconToggle
               handleToggle={() => setToggleVolume(!toggleVolume)}
               iconOne={{
@@ -115,7 +125,27 @@ export function CalculatorSidebar({
             />
           </div>
         </div>
-        <div className={styles["workouts__frequency"]}>
+        <div className={styles["workouts__controls-inputs"]}>
+          <InputWrapper maxWidth="100%" direction="row">
+            <SelectInput
+              id="trainingLevel"
+              name="Level"
+              hasLabel={true}
+              options={EXPERIENCE_LEVELS}
+              value={experienceLevel}
+              placeholder="Experience level"
+              onChange={(e) => onExperienceLevelChange(Number(e.target.value))}
+              tooltip={
+                <Tooltip
+                  message={[
+                    "Beginner: 6-12 sets per week",
+                    "Intermediate: 10-18 sets per week",
+                    "Advanced: 15-22 sets per week",
+                  ]}
+                />
+              }
+            />
+          </InputWrapper>
           <InputWrapper maxWidth="100%" direction="row">
             <RangeInput
               name="Frequency"
@@ -127,30 +157,15 @@ export function CalculatorSidebar({
               onChange={(e) => {
                 onTrainingFrequencyChange(Number(e.target.value));
               }}
-            />
-          </InputWrapper>
-
-          <InputWrapper maxWidth="100%" direction="row">
-            <RangeInput
-              name="Level"
-              id="client-level"
-              hasLabel={true}
-              min="1"
-              max="3"
-              value={experienceLevel}
-              onChange={(e) => {
-                onExperienceLevelChange(Number(e.target.value));
-              }}
-              tooltip={
-                <Tooltip
-                  message={["1: Beginner", "2: Intermediate", "3: Advanced"]}
-                />
-              }
+              tooltip={<Tooltip message="Training frequency per week" />}
             />
           </InputWrapper>
         </div>
 
-        {mode && workoutExercises.length > 0 ? (
+        {mode &&
+        workoutExercises.length > 0 &&
+        Number(experienceLevel) > 0 &&
+        trainingFrequency > 0 ? (
           <ul
             className={`${styles["workouts-total-volume__list"]} ${toggleVolume && styles["disabled"]}`}
           >
@@ -183,11 +198,21 @@ export function CalculatorSidebar({
           </ul>
         ) : (
           <div className={styles["workouts-total-volume__list"]}>
-            <p>Add exercises and choose a mode to display muscle volume.</p>
+            <p>
+              Add exercises and adjust the controls to show volume per muscle.
+            </p>
           </div>
         )}
       </section>
 
+      <Button
+        type="button"
+        maxWidth="100%"
+        disabled={false}
+        label="Generate Workout"
+        styling="primary-alt"
+        onClick={handleGeneratedWorkout}
+      />
       <Button
         type="button"
         maxWidth="100%"

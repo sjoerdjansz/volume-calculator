@@ -36,7 +36,7 @@
   --color-success-hover: #81c784;
 
   /* Shadows */
-  --shadow-elevated: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-elevated: 0 1px 6px rgba(0, 0, 0, 0.25);
 
   /* Typography */
   --font-mono: "Fira Code", "JetBrains Mono", monospace;
@@ -79,7 +79,7 @@ h6 {
 
 h1 {
   font-size: var(--font-size-xlarge);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 h2,
@@ -88,7 +88,7 @@ h3 {
 }
 
 h2 {
-  font-weight: 600;
+  font-weight: 500;
 }
 
 h3 {

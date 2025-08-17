@@ -4,7 +4,7 @@ import { InputWrapper } from "../InputWrapper/InputWrapper.jsx";
 import { InputField } from "../inputField/InputField.jsx";
 import { useEffect, useState } from "react";
 import { MagnifyingGlass, XCircle } from "@phosphor-icons/react";
-import { searchAndScoreExercises } from "../../helpers/searchAndScoreExercises.jsx";
+import { searchAndScoreExercises } from "../../helpers/searchAndScoreExercises.js";
 
 export function AddExerciseModal({
   searchData,
@@ -14,6 +14,7 @@ export function AddExerciseModal({
   addExercise,
   workoutExercises,
   removeExercise,
+  handleGeneratedWorkout,
 }) {
   const [searchString, setSearchString] = useState("");
   const [exercises, setExercises] = useState([]);
@@ -112,8 +113,15 @@ export function AddExerciseModal({
               </ul>
               <Button
                 type="button"
-                label={`Add ${searchType}`}
+                label="Generate workout"
                 styling="primary-alt"
+                maxWidth="100%"
+                onClick={handleGeneratedWorkout}
+              />
+              <Button
+                type="button"
+                label={`Save ${searchType}`}
+                styling="success"
                 maxWidth="100%"
                 onClick={onClose}
               />

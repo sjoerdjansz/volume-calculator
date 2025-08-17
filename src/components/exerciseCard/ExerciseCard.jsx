@@ -22,7 +22,6 @@ export function ExerciseCard({
 
     setVolumePercentages(ESTIMATE_MODES[volumeMode]);
   }, [volumeMode]);
-
   return (
     <article className={styles["exercise-card"]}>
       {volume || exercise ? (
@@ -34,7 +33,9 @@ export function ExerciseCard({
             </span>
           </div>
           <div className={styles["exercise-card__subtitle-wrapper"]}>
-            <p>{`${exercise.movement} – ${exercise.bodyPart}`}</p>
+            <p>{`Type: ${exercise?.compoundLabel}`}</p>
+            <p>{`Movement: ${exercise.movement}`}</p>
+            <p>{`Body part: ${exercise.bodyPart}`}</p>
             <div className={styles["subtitle-wrapper__sets"]}>
               <InputWrapper maxWidth="" direction="row">
                 <InputField
@@ -65,9 +66,10 @@ export function ExerciseCard({
                 <span>{volume.primary ? volume.primary : "–"} pts</span>
               </li>
               {exercise.secondaryMuscles?.map((muscle, index) => {
+                if (index >= 3) return null;
                 return (
                   <li key={index} className={styles.secondary}>
-                    <p>Secondary</p>
+                    <p>{index < 1 && "Secondary"}</p>
                     <p>{muscle}</p>
                     <span>
                       {volumePercentages.secondary

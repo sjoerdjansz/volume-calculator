@@ -11,7 +11,6 @@ export function calculateSingleExerciseVolumes(exercisesData, modeData, mode) {
 
 export function calculateTotalVolumes(mode, modeData, exercises) {
   const { primary, secondary } = modeData[mode];
-
   const newData = [];
 
   exercises.forEach((exercise) => {

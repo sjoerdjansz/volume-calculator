@@ -4,6 +4,7 @@
 }
 
 .tooltip > span {
+  display: flex;
   cursor: pointer;
   color: var(--color-text-secondary);
 }
@@ -32,11 +33,7 @@
   overflow-y: auto;
   white-space: normal;
   word-break: break-word;
-}
-
-.tooltip_message:hover {
-  background-color: var(--color-surface);
-  cursor: pointer;
+  font-size: var(--font-size-small);
 }
 
 .tooltip__message-items {

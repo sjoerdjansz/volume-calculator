@@ -17,6 +17,11 @@ import { AddExerciseModal } from "../components/addExerciseModal/AddExerciseModa
 import { calculateVolumeByLevel } from "../helpers/calculateVolumeByLevel.js";
 import { CalculatorSidebar } from "../components/calculatorSidebar/CalculatorSidebar.jsx";
 
+import { createWorkout } from "../helpers/createWorkout.js";
+import { MANDATORY_GROUPS } from "../data/mandatoryGroups.js";
+import { calculateCompoundness } from "../helpers/calculateCompoundness.js";
+import { sortExercises } from "../helpers/sortExercises.js";
+
 export function Calculator() {
   const [singleExerciseVolumes, setSingleExerciseVolumes] = useState([]);
   const [mode, setMode] = useState("");
@@ -28,9 +33,12 @@ export function Calculator() {
   const [workoutExercises, setWorkoutExercises] = useState([]);
   const [workoutName, setWorkoutName] = useState("");
   const [minimizeAllCards, setMinimizeAllCards] = useState(false);
-  const [experienceLevel, setExperienceLevel] = useState(1);
+  const [experienceLevel, setExperienceLevel] = useState("");
   const [workouts, setWorkouts] = useState([]);
 
+  // TODO: useeffect heeft nu weinig zin. On load checkt die of er een workout is geselecteerd
+  // als een workout wordt gevonden uit de database (die bestaat niet) zet die de verschillende states
+  // geen workout match = return
   useEffect(() => {
     if (!selectedWorkout) {
       return;
@@ -45,7 +53,11 @@ export function Calculator() {
     setWorkoutName(matchedWorkout.name);
     setWorkoutExercises(matchedWorkout.exercises || []);
     setTrainingFrequency(Number(matchedWorkout.frequency) || 1);
-    setExperienceLevel(Number(matchedWorkout.level) || 1);
+    setExperienceLevel(
+      matchedWorkout.level !== undefined && matchedWorkout.level !== null
+        ? Number(matchedWorkout.level)
+        : "",
+    );
     setMode(matchedWorkout.mode || "");
   }, [selectedWorkout, workouts]);
 
@@ -56,7 +68,7 @@ export function Calculator() {
       setSingleExerciseVolumes([]);
       return;
     }
-
+    console.log(workoutExercises);
     const singleExercises = calculateSingleExerciseVolumes(
       workoutExercises,
       ESTIMATE_MODES,
@@ -69,7 +81,7 @@ export function Calculator() {
     );
 
     const totalMuscleVolumesWithColors = calculateVolumeByLevel(
-      experienceLevel,
+      Number(experienceLevel),
       totalMuscleVolumes,
       trainingFrequency,
     );
@@ -77,6 +89,21 @@ export function Calculator() {
     setTotalMuscleVolume(totalMuscleVolumesWithColors);
     setSingleExerciseVolumes(singleExercises);
   }, [experienceLevel, mode, workoutExercises, trainingFrequency]);
+
+  function addGeneratedExercises() {
+    const compoundness = calculateCompoundness(EXERCISES);
+    let sortedWorkout = sortExercises(
+      createWorkout(compoundness, MANDATORY_GROUPS),
+    );
+
+    sortedWorkout = sortedWorkout.map((exercise) => {
+      return {
+        ...exercise,
+        sets: 3,
+      };
+    });
+    setWorkoutExercises(sortedWorkout);
+  }
 
   // add exercise to workout, still uses name to match (TODO: update to ID).
   function handleAddExercise(exercise) {
@@ -86,7 +113,6 @@ export function Calculator() {
     const match = EXERCISES.find((exercise) => {
       return exercise.name.toLowerCase() === sanitizedExercise;
     });
-
     if (!match) {
       console.warn("No match found");
       return;
@@ -102,10 +128,12 @@ export function Calculator() {
       return;
     }
 
+    const computedMatch = calculateCompoundness(match);
+
     setWorkoutExercises((prevState) => [
       ...prevState,
       {
-        ...match,
+        ...computedMatch,
         sets: 3, // set 3 sets as basic value
       },
     ]);
@@ -149,7 +177,7 @@ export function Calculator() {
     setWorkoutName("");
     setWorkoutExercises([]);
     setTrainingFrequency(1);
-    setExperienceLevel(1);
+    setExperienceLevel([]);
     setMode("");
   }
 
@@ -210,6 +238,7 @@ export function Calculator() {
             addExercise={handleAddExercise}
             workoutExercises={workoutExercises}
             removeExercise={handleRemoveExercise}
+            handleGeneratedWorkout={addGeneratedExercises}
           />
         )}
         <CalculatorSidebar
@@ -230,6 +259,7 @@ export function Calculator() {
           onSaveWorkout={handleSaveWorkout}
           showModal={showModal}
           onShowModal={setShowModal}
+          handleGeneratedWorkout={addGeneratedExercises}
         />
         <main className={styles["workouts-container"]}>
           <div className={styles["workouts__workout-name-container"]}>

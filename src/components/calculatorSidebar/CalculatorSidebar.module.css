@@ -36,10 +36,6 @@ aside {
   gap: var(--spacing-md);
 }
 
-.workouts__frequency {
-  font-size: var(--font-size-small);
-}
-
 .workouts__controls {
   display: flex;
   flex-direction: column;
@@ -54,11 +50,26 @@ aside {
   gap: var(--spacing-md);
 }
 
+.workouts__controls-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  align-items: center;
+  font-size: var(--font-size-small);
+}
+
 .workouts__subtitle {
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
+  margin: var(--spacing-md) 0;
+}
+
+.workouts__subtitle > :first-child {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
 }
 
 .workouts__total-volume > :first-child {
@@ -81,7 +92,7 @@ aside {
   border-radius: var(--radius-small);
   overflow-y: auto;
   flex-direction: row;
-  max-height: 250px;
+  max-height: 300px;
   box-shadow: var(--shadow-elevated);
 }
 
