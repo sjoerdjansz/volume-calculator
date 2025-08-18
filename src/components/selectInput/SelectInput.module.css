@@ -1,9 +1,22 @@
 select {
   padding: var(--spacing-sm);
+  height: 2.3rem;
   width: 100%;
   border: none;
   border-radius: var(--radius-small);
   background-color: var(--color-surface-variant);
   color: var(--color-text-primary);
   outline: none;
+  text-transform: capitalize;
+  box-shadow: var(--shadow-elevated);
+  font: inherit;
+  font-size: var(--font-size-base);
+  line-height: 2.3rem;
+}
+
+.select-label {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  flex: 0 0 100px;
 }

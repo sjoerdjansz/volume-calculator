@@ -2,11 +2,18 @@
   padding: var(--spacing-sm);
   border: none;
   border-radius: var(--radius-small);
-  color: var(--color-text-primary);
+  color: #fff;
   font-weight: 600;
   width: 100%;
   max-width: 400px;
   cursor: pointer;
+  box-shadow: var(--shadow-elevated);
+  outline: none;
+  height: 2.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .primary {
@@ -15,6 +22,17 @@
 
 .primary:hover {
   background-color: var(--color-accent-primary-hover);
+}
+
+.primary-alt {
+  border: 2px solid var(--color-accent-primary);
+  background-color: transparent;
+  color: var(--color-accent-primary);
+}
+
+.primary-alt:hover {
+  background-color: var(--color-accent-primary-hover);
+  color: #fff;
 }
 
 .secondary {

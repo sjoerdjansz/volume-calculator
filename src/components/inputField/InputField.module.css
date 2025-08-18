@@ -6,4 +6,13 @@ input {
   background-color: var(--color-surface-variant);
   color: var(--color-text-primary);
   outline: none;
+  box-shadow: var(--shadow-elevated);
+  font: inherit;
+  font-size: var(--font-size-base);
+  height: 2.3rem;
+  line-height: 2.3rem;
+}
+
+label {
+  margin: var(--spacing-sm) 0;
 }

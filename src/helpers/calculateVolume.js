@@ -3,26 +3,25 @@ export function calculateSingleExerciseVolumes(exercisesData, modeData, mode) {
 
   return exercisesData.map((i) => {
     return {
-      primary: parseFloat((i.sets * factor.primary).toFixed(2)),
-      secondary: parseFloat((i.sets * factor.secondary).toFixed(2)),
+      primary: parseFloat(((i.sets || 0) * factor.primary).toFixed(2)),
+      secondary: parseFloat(((i.sets || 0) * factor.secondary).toFixed(2)),
     };
   });
 }
 
 export function calculateTotalVolumes(mode, modeData, exercises) {
   const { primary, secondary } = modeData[mode];
-
   const newData = [];
 
   exercises.forEach((exercise) => {
     newData.push({
       muscle: exercise.primaryMuscle,
-      volume: exercise.sets * primary,
+      volume: exercise.sets * primary || 0,
     });
     exercise.secondaryMuscles.forEach((muscle) => {
       newData.push({
         muscle: muscle,
-        volume: exercise.sets * secondary,
+        volume: exercise.sets * secondary || 0,
       });
     });
   });

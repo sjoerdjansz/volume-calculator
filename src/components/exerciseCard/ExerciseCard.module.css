@@ -5,6 +5,7 @@
   padding: var(--spacing-md);
   border-radius: var(--radius-small);
   font-size: var(--font-size-small);
+  box-shadow: var(--shadow-elevated);
 }
 
 .exercise-card__title-wrapper {
@@ -22,10 +23,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--spacing-sm);
 }
 
-.exercise-card__subtitle-wrapper > :first-child {
+.exercise-card__subtitle-wrapper > p {
   color: var(--color-text-secondary);
+  text-transform: capitalize;
 }
 
 .subtitle-wrapper__sets {
