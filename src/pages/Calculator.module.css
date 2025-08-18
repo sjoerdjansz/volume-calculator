@@ -2,17 +2,26 @@
   display: flex;
   width: 100%;
   flex-direction: column;
-  height: 100%;
+  min-height: 0;
   position: relative;
+  flex: 1 1 auto;
 }
 
 .workouts__content {
-  min-height: 100%;
   display: flex;
   width: 100%;
   padding: var(--spacing-lg);
   flex-direction: row;
   gap: var(--spacing-lg);
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.workouts__page-title-wrapper {
+  display: flex;
+  margin: var(--spacing-md) var(--spacing-lg);
+  justify-content: space-between;
+  align-items: center;
 }
 
 h1 {
@@ -87,14 +96,10 @@ h1 {
 }
 
 @media (max-width: 1024px) {
-  .workouts > div {
+  .workouts__content {
     flex-direction: column;
     padding: var(--spacing-xs);
     gap: var(--spacing-md);
-  }
-
-  h1 {
-    margin: var(--spacing-sm);
   }
 
   aside {

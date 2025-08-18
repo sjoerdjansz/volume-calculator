@@ -1,5 +1,5 @@
 /* START VAN SIDE CONTENT / CONTROLS*/
-aside {
+.controls-sidebar {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
@@ -7,8 +7,6 @@ aside {
   background-color: var(--color-surface);
   border-radius: var(--radius-small);
   padding: var(--spacing-md);
-  justify-content: space-between;
-  /*height: 100%;*/
 }
 
 .workouts__new-workout-container {
@@ -32,7 +30,7 @@ aside {
 .workouts__total-volume {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 1 auto;
   gap: var(--spacing-md);
 }
 
@@ -92,7 +90,7 @@ aside {
   border-radius: var(--radius-small);
   overflow-y: auto;
   flex-direction: row;
-  max-height: 300px;
+  max-height: 220px;
   box-shadow: var(--shadow-elevated);
 }
 

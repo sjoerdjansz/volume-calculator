@@ -7,9 +7,6 @@ export function NavBar() {
     <nav className={styles.navbar}>
       <p className={styles.logo}>Volume Calculator</p>
       <ul className={styles["navbar-list"]}>
-        {/*<li>*/}
-        {/*  <List size={24} />*/}
-        {/*</li>*/}
         <li>
           <NavLink to={"/"}>Home</NavLink>
         </li>

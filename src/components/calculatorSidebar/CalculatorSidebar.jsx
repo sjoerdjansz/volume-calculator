@@ -17,7 +17,6 @@ import { EXPERIENCE_LEVELS } from "../../data/experienceLevels.js";
 
 export function CalculatorSidebar({
   workouts,
-  onStartOver,
   onWorkoutNameChange,
   workoutName,
   mode,
@@ -34,11 +33,12 @@ export function CalculatorSidebar({
   onShowModal,
   showModal,
   handleGeneratedWorkout,
+  handleClearWorkout,
 }) {
   const [toggleVolume, setToggleVolume] = useState(false);
 
   return (
-    <aside>
+    <aside className={styles["controls-sidebar"]}>
       <div className={styles["workouts__new-workout-container"]}>
         <div>
           <Button
@@ -52,9 +52,9 @@ export function CalculatorSidebar({
           <Button
             type="button"
             maxWidth="100%"
-            styling="error"
-            label="Delete Workout"
-            onClick={onStartOver}
+            styling="primary-alt"
+            label="Clear workout"
+            onClick={handleClearWorkout}
             icon={<Eraser size={16} />}
           />
         </div>

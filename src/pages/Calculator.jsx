@@ -12,6 +12,7 @@ import {
   ArrowsInLineVertical,
   ArrowsOutLineVertical,
   Barbell,
+  Eraser,
 } from "@phosphor-icons/react";
 import { AddExerciseModal } from "../components/addExerciseModal/AddExerciseModal.jsx";
 import { calculateVolumeByLevel } from "../helpers/calculateVolumeByLevel.js";
@@ -22,6 +23,8 @@ import { MANDATORY_GROUPS } from "../data/mandatoryGroups.js";
 import { calculateCompoundness } from "../helpers/calculateCompoundness.js";
 import { sortExercises } from "../helpers/sortExercises.js";
 import { Snackbar } from "../components/snackbar/Snackbar.jsx";
+import { TotalVolumeSidebar } from "../components/totalVolumeSidebar/TotalVolumeSidebar.jsx";
+import { Button } from "../components/button/Button.jsx";
 
 export function Calculator() {
   const [workoutExercises, setWorkoutExercises] = useState([]);
@@ -45,7 +48,12 @@ export function Calculator() {
   const [selectedWorkout, setSelectedWorkout] = useState("");
   const [workouts, setWorkouts] = useState([]);
 
-  // TODO: useeffect heeft nu weinig zin. On load checkt die of er een workout is geselecteerd
+  useEffect(() => {
+    const storedWorkouts = localStorage.getItem("workouts");
+
+    setWorkouts(storedWorkouts ? JSON.parse(storedWorkouts) : []);
+  }, []);
+
   // als een workout wordt gevonden uit de database (die bestaat niet) zet die de verschillende states
   // geen workout match = return
   useEffect(() => {
@@ -77,7 +85,6 @@ export function Calculator() {
       setSingleExerciseVolumes([]);
       return;
     }
-    console.log(workoutExercises);
     const singleExercises = calculateSingleExerciseVolumes(
       workoutExercises,
       ESTIMATE_MODES,
@@ -148,71 +155,69 @@ export function Calculator() {
     ]);
   }
 
-  // TODO: Make save and delete workout functions
   function handleSaveWorkout(e) {
     e.preventDefault();
 
-    console.log("Save workout clicked");
-
-    // make object with all details for the workout
     const newWorkout = {
       id: Date.now(),
-      name: workoutName || `Workout-${Date.now()}`,
+      name: workoutName.trim() || `Workout-${Date.now()}`,
       exercises: workoutExercises,
       frequency: Number(trainingFrequency),
       level: Number(experienceLevel),
       mode,
     };
 
-    // TODO: make add workout flow
-    // 1. check if workout name (better is ID, because names can be same) is duplicate.
-    // If yes, update the workout
-    // 2. if not a duplicate, save new workout
-    // 3. Update state so the saved workout shows in the select field
-    // 4. make sure workout gets added to database (or localstorage)
-
-    const hasDuplicateName = workouts.find((item) => {
-      return item.name === newWorkout.name;
-    });
-
-    if (hasDuplicateName) {
-      console.warn("Workout name already taken");
-      setToggleSnackbar({
-        open: true,
-        message: "Workout name already exists",
-        status: "error",
-      });
-      return;
-    }
+    // make sure workout gets added to database (or localstorage)
 
     // maybe add the UX option for user to overwrite/save or cancel and adjust name
     // Now we auto overwrite
     // we gebruiken de prevState om te checken of we moeten overwriten of toevoegen
     setWorkouts((prevState) => {
-      const exists = prevState.find((item) => item.name === newWorkout.name);
-
-      // als de workout al bestaat  geven we de nieuwe workout (versie) mee. Zo niet, dan blijft de oude
-      // versie (item) staat.
-      if (exists) {
-        return prevState.map((item) => {
-          console.warn("Workout id already exists, we overwrite");
-
-          return item.id === newWorkout.id ? newWorkout : item;
+      const existingWorkout = prevState.find(
+        (item) => item.name === newWorkout.name,
+      );
+      if (existingWorkout) {
+        const updatedWorkouts = prevState.map((item) => {
+          if (item.name === newWorkout.name) {
+            return {
+              ...newWorkout,
+              id: item.id,
+            };
+          } else {
+            return item;
+          }
         });
-        // retourneer de vorige state plus de nieuwe workout als er geen overwrite is
+        setToggleSnackbar({
+          open: true,
+          message: "Workout edited",
+          status: "success",
+        });
+        localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
+
+        return updatedWorkouts;
       } else {
-        return [...prevState, newWorkout];
+        setToggleSnackbar({
+          open: true,
+          message: "Workout saved",
+          status: "success",
+        });
+
+        localStorage.setItem(
+          "workouts",
+          JSON.stringify([...prevState, newWorkout]),
+        );
+        return [...prevState, newWorkout]; // we staat duplicates op naam feitelijk toe. wellicht aanpassen
+        // in toekomst
       }
     });
+
+    setSelectedWorkout(newWorkout.name);
+    setWorkoutName(newWorkout.name);
   }
 
   // Delete workout and reset state
   function handleDeleteWorkout() {
-    // 1. Search for matching workout ID in workouts list
-    // 2. If found remove the workout from the list and update the local storage/database
-    // 3. reset state
-
-    console.log("Delete workout clicked");
+    localStorage.setItem("workouts", "");
 
     // Reset state
     setWorkouts([]);
@@ -220,7 +225,21 @@ export function Calculator() {
     setWorkoutName("");
     setWorkoutExercises([]);
     setTrainingFrequency(1);
-    setExperienceLevel([]);
+    setExperienceLevel("");
+    setMode("");
+  }
+
+  function handleClearWorkout() {
+    setToggleSnackbar({
+      open: true,
+      message: "Workout data cleared",
+    });
+    // Reset state
+    setSelectedWorkout("");
+    setWorkoutName("");
+    setWorkoutExercises([]);
+    setTrainingFrequency(1);
+    setExperienceLevel("");
     setMode("");
   }
 
@@ -288,8 +307,16 @@ export function Calculator() {
           }))
         }
       />
-      <h1>Workout Templates</h1>
-
+      <div className={styles["workouts__page-title-wrapper"]}>
+        <h1>Workout Templates</h1>
+        <Button
+          type="button"
+          maxWidth="10rem"
+          styling="error"
+          label="Delete workout"
+          onClick={handleDeleteWorkout}
+        />
+      </div>
       <div className={styles["workouts__content"]}>
         {showModal && (
           <AddExerciseModal
@@ -322,6 +349,7 @@ export function Calculator() {
           showModal={showModal}
           onShowModal={setShowModal}
           handleGeneratedWorkout={addGeneratedExercises}
+          handleClearWorkout={handleClearWorkout}
         />
         <main className={styles["workouts-container"]}>
           <div className={styles["workouts__workout-name-container"]}>
@@ -370,6 +398,7 @@ export function Calculator() {
             )}
           </section>
         </main>
+        <TotalVolumeSidebar />
       </div>
     </div>
   );

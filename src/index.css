@@ -8,13 +8,13 @@
 
 :root {
   /* Base Colors (mid-tone neutral) */
-  --color-bg: #2c2f33; /* diepe grijsblauw basis */
-  --color-surface: #373b40; /* iets lichter voor kaarten/panelen */
-  --color-surface-variant: #44484d; /* subtiel contrastvlak */
+  --color-bg: #101217; /* diepe grijsblauw basis */
+  --color-surface: #16191f; /* iets lichter voor kaarten/panelen */
+  --color-surface-variant: #1d212a; /* subtiel contrastvlak */
   --color-border: #555a60; /* zachte grijs voor randen */
 
   /* Text Colors */
-  --color-text-primary: #e6e8eb; /* bijna-wit, niet fel */
+  --color-text-primary: #eaeaef; /* bijna-wit, niet fel */
   --color-text-secondary: #b3b7bc; /* koel grijsblauw */
   --color-text-disabled: rgba(230, 232, 235, 0.38);
 
@@ -36,7 +36,7 @@
   --color-success-hover: #81c784;
 
   /* Shadows */
-  --shadow-elevated: 0 1px 6px rgba(0, 0, 0, 0.25);
+  --shadow-elevated: 0 1px 5px rgba(0, 0, 0, 0.25);
 
   /* Typography */
   --font-mono: "Fira Code", "JetBrains Mono", monospace;
