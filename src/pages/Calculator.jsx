@@ -398,7 +398,8 @@ export function Calculator() {
             )}
           </section>
         </main>
-        <TotalVolumeSidebar />
+        {/*TODO: verzinnen wat te doen met nieuwe*/}
+        {/*<TotalVolumeSidebar />*/}
       </div>
     </div>
   );

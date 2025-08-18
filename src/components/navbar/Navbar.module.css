@@ -21,3 +21,7 @@
   color: var(--color-accent-primary);
   font-weight: 500;
 }
+
+.navbar > :last-child {
+  font-size: var(--font-size-xsmall);
+}
