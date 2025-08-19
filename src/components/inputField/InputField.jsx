@@ -11,9 +11,14 @@ export function InputField({
 }) {
   return (
     <>
-      {hasLabel && <label htmlFor={id}>{name}</label>}
+      {hasLabel && (
+        <label className={styles.label} htmlFor={id}>
+          {name}
+        </label>
+      )}
 
       <input
+        className={styles.input}
         type={type}
         name={name}
         id={id}

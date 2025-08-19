@@ -1,4 +1,4 @@
-input {
+.input {
   padding: var(--spacing-sm);
   width: 100%;
   border: none;
@@ -13,6 +13,6 @@ input {
   line-height: 2.3rem;
 }
 
-label {
+.label {
   margin: var(--spacing-sm) 0;
 }
