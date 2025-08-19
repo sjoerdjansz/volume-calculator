@@ -70,3 +70,16 @@
   color: var(--color-text-disabled);
   cursor: not-allowed;
 }
+
+.error-text {
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  height: fit-content;
+  width: fit-content;
+  color: var(--color-error);
+}
+
+.error-text:hover {
+  color: var(--color-error-hover);
+}

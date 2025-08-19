@@ -2,26 +2,14 @@ import styles from "./ExerciseCard.module.css";
 import { Trash } from "@phosphor-icons/react";
 import { InputWrapper } from "../InputWrapper/InputWrapper.jsx";
 import { InputField } from "../inputField/InputField.jsx";
-import { ESTIMATE_MODES } from "../../data/estimateMode.js";
-import { useEffect, useState } from "react";
 
 export function ExerciseCard({
   exercise,
   volume,
   onSetChange,
   removeExercise,
-  volumeMode,
   minimize,
 }) {
-  const [volumePercentages, setVolumePercentages] = useState({});
-
-  useEffect(() => {
-    if (!volumeMode) {
-      return;
-    }
-
-    setVolumePercentages(ESTIMATE_MODES[volumeMode]);
-  }, [volumeMode]);
   return (
     <article className={styles["exercise-card"]}>
       {volume || exercise ? (
@@ -33,9 +21,10 @@ export function ExerciseCard({
             </span>
           </div>
           <div className={styles["exercise-card__subtitle-wrapper"]}>
-            <p>{`Type: ${exercise?.compoundLabel}`}</p>
-            <p>{`Movement: ${exercise.movement}`}</p>
-            <p>{`Body part: ${exercise.bodyPart}`}</p>
+            <div>
+              <p>{exercise.bodyPart}</p>
+              <p>{exercise?.compoundLabel}</p>
+            </div>
             <div className={styles["subtitle-wrapper__sets"]}>
               <InputWrapper maxWidth="" direction="row">
                 <InputField
@@ -57,12 +46,7 @@ export function ExerciseCard({
               <li className={styles.primary}>
                 <p>Primary</p>
                 <p>{exercise.primaryMuscle}</p>
-                <span>
-                  {volumePercentages.primary
-                    ? volumePercentages.primary * 100
-                    : 0}
-                  %
-                </span>
+
                 <span>{volume.primary ? volume.primary : "–"} pts</span>
               </li>
               {exercise.secondaryMuscles?.map((muscle, index) => {
@@ -71,12 +55,7 @@ export function ExerciseCard({
                   <li key={index} className={styles.secondary}>
                     <p>{index < 1 && "Secondary"}</p>
                     <p>{muscle}</p>
-                    <span>
-                      {volumePercentages.secondary
-                        ? volumePercentages.secondary * 100
-                        : 0}
-                      %
-                    </span>
+
                     <span>{volume.secondary ? volume.secondary : "–"} pts</span>
                   </li>
                 );

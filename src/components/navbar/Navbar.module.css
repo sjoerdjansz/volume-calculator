@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: space-around;
   background-color: var(--color-surface);
-  height: 60px;
+  height: 50px;
 }
 
 .navbar-list {

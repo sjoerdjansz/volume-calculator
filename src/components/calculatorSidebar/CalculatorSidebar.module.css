@@ -42,18 +42,11 @@
   gap: var(--spacing-md);
 }
 
-.workouts__controls > :first-child {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  gap: var(--spacing-md);
-}
-
 .workouts__controls-inputs {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  align-items: center;
+  align-items: flex-start;
   font-size: var(--font-size-small);
 }
 
@@ -62,7 +55,7 @@
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  margin: var(--spacing-md) 0;
+  margin: var(--spacing-sm) 0;
 }
 
 .workouts__subtitle > :first-child {
@@ -121,4 +114,11 @@
   padding: var(--spacing-sm);
   background-color: var(--color-surface);
   border-radius: var(--radius-small);
+}
+
+@media (max-width: 1024px) {
+  .controls-sidebar {
+    padding: var(--spacing-md) var(--spacing-sm);
+    flex: 0 1 600px;
+  }
 }
