@@ -76,32 +76,6 @@ export function CalculatorSidebar({
       </div>
       <section className={styles["workouts__total-volume"]}>
         <div className={styles["workouts__controls"]}>
-          <div>
-            <InputWrapper maxWidth="100%">
-              <InputField
-                id="workout-name"
-                name="Name"
-                type="text"
-                hasLabel={false}
-                placeholder="Workout name"
-                value={workoutName}
-                onChange={onWorkoutNameChange}
-              />
-            </InputWrapper>
-            <InputWrapper maxWidth="100%">
-              <SelectInput
-                id="mode"
-                name="Mode"
-                hasLabel={false}
-                options={["neutral", "optimistic", "conservative"]}
-                placeholder="Choose mode"
-                onChange={(e) => {
-                  onModeChange(e.target.value);
-                }}
-                value={mode}
-              />
-            </InputWrapper>
-          </div>
           <div className={styles["workouts__subtitle"]}>
             <div>
               <h3>Total training volume</h3>
@@ -126,6 +100,30 @@ export function CalculatorSidebar({
           </div>
         </div>
         <div className={styles["workouts__controls-inputs"]}>
+          <InputWrapper maxWidth="100%">
+            <InputField
+              id="workout-name"
+              name="Name"
+              type="text"
+              hasLabel={false}
+              placeholder="Workout name"
+              value={workoutName}
+              onChange={onWorkoutNameChange}
+            />
+          </InputWrapper>
+          <InputWrapper maxWidth="100%">
+            <SelectInput
+              id="mode"
+              name="Mode"
+              hasLabel={false}
+              options={["neutral", "optimistic", "conservative"]}
+              placeholder="Choose mode"
+              onChange={(e) => {
+                onModeChange(e.target.value);
+              }}
+              value={mode}
+            />
+          </InputWrapper>
           <InputWrapper maxWidth="100%" direction="row">
             <SelectInput
               id="trainingLevel"

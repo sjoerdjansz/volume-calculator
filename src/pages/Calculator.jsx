@@ -312,8 +312,8 @@ export function Calculator() {
         <Button
           type="button"
           maxWidth="10rem"
-          styling="error"
-          label="Delete workout"
+          styling="error-text"
+          label="Delete workouts"
           onClick={handleDeleteWorkout}
         />
       </div>
