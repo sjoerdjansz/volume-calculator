@@ -64,71 +64,66 @@ export function ControlsSidebar({
         </div>
       </div>
       <section className={styles["workouts__controls-container"]}>
-        <div className={styles["workouts__controls"]}>
-          <h3>Settings</h3>
-
-          <div className={styles["workouts__controls-inputs"]}>
-            <InputWrapper maxWidth="100%">
-              <InputField
-                id="workout-name"
-                name="Name"
-                type="text"
-                hasLabel={false}
-                placeholder="Workout name"
-                value={workoutName}
-                onChange={onWorkoutNameChange}
-              />
-            </InputWrapper>
-            <InputWrapper maxWidth="100%">
-              <SelectInput
-                id="mode"
-                name="Mode"
-                hasLabel={false}
-                options={["neutral", "optimistic", "conservative"]}
-                placeholder="Choose mode"
-                onChange={(e) => {
-                  onModeChange(e.target.value);
-                }}
-                value={mode}
-              />
-            </InputWrapper>
-            <InputWrapper maxWidth="100%" direction="row">
-              <SelectInput
-                id="trainingLevel"
-                name="Level"
-                hasLabel={true}
-                options={EXPERIENCE_LEVELS}
-                value={experienceLevel}
-                placeholder="Experience level"
-                onChange={(e) =>
-                  onExperienceLevelChange(Number(e.target.value))
-                }
-                tooltip={
-                  <Tooltip
-                    message={[
-                      "Beginner: 6-12 sets per week",
-                      "Intermediate: 10-18 sets per week",
-                      "Advanced: 15-22 sets per week",
-                    ]}
-                  />
-                }
-              />
-            </InputWrapper>
-            <InputWrapper maxWidth="100%" direction="row">
-              <RangeInput
-                name="Frequency"
-                id="frequency"
-                hasLabel={true}
-                min="1"
-                max="7"
-                value={trainingFrequency}
-                onChange={(e) => {
-                  onTrainingFrequencyChange(Number(e.target.value));
-                }}
-                tooltip={<Tooltip message="Training frequency per week" />}
-              />
-            </InputWrapper>
-          </div>
+        <h3>Settings</h3>
+        <div className={styles["workouts__controls-inputs"]}>
+          <InputWrapper maxWidth="100%">
+            <InputField
+              id="workout-name"
+              name="Name"
+              type="text"
+              hasLabel={false}
+              placeholder="Workout name"
+              value={workoutName}
+              onChange={onWorkoutNameChange}
+            />
+          </InputWrapper>
+          <InputWrapper maxWidth="100%">
+            <SelectInput
+              id="mode"
+              name="Mode"
+              hasLabel={false}
+              options={["neutral", "optimistic", "conservative"]}
+              placeholder="Choose mode"
+              onChange={(e) => {
+                onModeChange(e.target.value);
+              }}
+              value={mode}
+            />
+          </InputWrapper>
+          <InputWrapper maxWidth="100%" direction="row">
+            <SelectInput
+              id="trainingLevel"
+              name="Level"
+              hasLabel={true}
+              options={EXPERIENCE_LEVELS}
+              value={String(experienceLevel)}
+              placeholder="Experience level"
+              onChange={(e) => onExperienceLevelChange(Number(e.target.value))}
+              tooltip={
+                <Tooltip
+                  message={[
+                    "Beginner: 6-12 sets per week",
+                    "Intermediate: 10-18 sets per week",
+                    "Advanced: 15-22 sets per week",
+                  ]}
+                />
+              }
+            />
+          </InputWrapper>
+          <InputWrapper maxWidth="100%" direction="row">
+            <RangeInput
+              name="Frequency"
+              id="frequency"
+              hasLabel={true}
+              min="1"
+              max="7"
+              value={trainingFrequency}
+              onChange={(e) => {
+                onTrainingFrequencyChange(Number(e.target.value));
+              }}
+              tooltip={<Tooltip message="Training frequency per week" />}
+            />
+          </InputWrapper>
         </div>
       </section>
 

@@ -65,3 +65,10 @@
 .yellow-card {
   border-top: 0.5rem solid var(--color-accent-secondary-hover);
 }
+
+@media (max-width: 1024px) {
+  .volume-sidebar {
+    padding: var(--spacing-md) var(--spacing-sm);
+    flex: 1 1 auto;
+  }
+}

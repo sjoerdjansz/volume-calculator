@@ -334,11 +334,13 @@ export function Calculator() {
           workoutName={workoutName}
           workouts={workouts}
           onStartOver={handleDeleteWorkout}
+          mode={mode}
           onModeChange={setMode}
           selectedWorkout={selectedWorkout}
           onSelectWorkout={setSelectedWorkout}
           onTrainingFrequencyChange={setTrainingFrequency}
           onExperienceLevelChange={setExperienceLevel}
+          experienceLevel={experienceLevel}
           onSaveWorkout={handleSaveWorkout}
           showModal={showModal}
           onShowModal={setShowModal}

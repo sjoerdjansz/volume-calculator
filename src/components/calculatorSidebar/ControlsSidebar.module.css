@@ -53,6 +53,6 @@
 @media (max-width: 1024px) {
   .controls-sidebar {
     padding: var(--spacing-md) var(--spacing-sm);
-    flex: 0 1 600px;
+    flex: 0 1 500px;
   }
 }

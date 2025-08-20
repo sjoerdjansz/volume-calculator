@@ -55,6 +55,10 @@ Reducing a few sets may improve recovery and balance.`;
     }
   }
 
+  // TODO: Zorgen dat de gebruiker de optie heeft om het totale volume van
+  // alle opgeslagen workouts te zien met een toggle in controls oid.
+  // dus: toggle tussen: show single workout / show all workouts volumes
+
   return (
     <aside className={styles["volume-sidebar"]}>
       <div className={styles["volume-sidebar__header"]}>
@@ -81,6 +85,7 @@ Reducing a few sets may improve recovery and balance.`;
             totalMuscleVolume.map((muscle) => {
               return (
                 <li
+                  key={muscle.muscle}
                   className={`${styles["muscle-volume__list-item"]} ${styles[getStyles(muscle, experienceLevel)]}`}
                 >
                   <p className={styles["muscle-list-item__title"]}>
