@@ -13,9 +13,12 @@ export function SelectInput({
   return (
     <>
       {hasLabel && (
-        <label className={styles["select-label"]} htmlFor={id}>
-          {name} {tooltip}
-        </label>
+        <div className={styles["select-label-wrapper"]}>
+          <label className={styles["select-label"]} htmlFor={id}>
+            {name}
+          </label>
+          {tooltip}
+        </div>
       )}
       <select value={value ?? ""} name={name} id={id} onChange={onChange}>
         {placeholder && (

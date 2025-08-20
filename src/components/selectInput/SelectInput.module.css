@@ -14,9 +14,9 @@ select {
   line-height: 2.3rem;
 }
 
-.select-label {
+.select-label-wrapper {
   display: flex;
-  gap: var(--spacing-sm);
-  align-items: center;
   flex: 0 0 100px;
+  align-items: center;
+  gap: var(--spacing-sm);
 }
