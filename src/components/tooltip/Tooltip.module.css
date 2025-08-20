@@ -26,9 +26,7 @@
   box-shadow: var(--shadow-elevated);
   flex: 1;
   z-index: 1000;
-  width: max-content;
-  min-width: 12rem;
-  max-width: min(40rem, 90vw);
+  width: min(240px, 90vw);
   max-height: 8rem;
   overflow-y: auto;
   white-space: normal;

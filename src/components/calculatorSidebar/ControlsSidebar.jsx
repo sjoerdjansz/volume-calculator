@@ -1,21 +1,14 @@
-import styles from "./CalculatorSidebar.module.css";
+import styles from "./ControlsSidebar.module.css";
 import { Button } from "../button/Button.jsx";
-import {
-  CaretCircleDown,
-  CaretCircleUp,
-  Eraser,
-  PlusCircle,
-} from "@phosphor-icons/react";
+import { Eraser, PlusCircle } from "@phosphor-icons/react";
 import { InputWrapper } from "../InputWrapper/InputWrapper.jsx";
 import { SelectInput } from "../selectInput/SelectInput.jsx";
 import { InputField } from "../inputField/InputField.jsx";
-import { IconToggle } from "../iconToggle/IconToggle.jsx";
 import { RangeInput } from "../rangeInput/RangeInput.jsx";
 import { Tooltip } from "../tooltip/Tooltip.jsx";
-import { useState } from "react";
 import { EXPERIENCE_LEVELS } from "../../data/experienceLevels.js";
 
-export function CalculatorSidebar({
+export function ControlsSidebar({
   workouts,
   onWorkoutNameChange,
   workoutName,
@@ -27,16 +20,12 @@ export function CalculatorSidebar({
   onTrainingFrequencyChange,
   experienceLevel,
   onExperienceLevelChange,
-  workoutExercises,
-  totalMuscleVolume,
   onSaveWorkout,
   onShowModal,
   showModal,
   handleGeneratedWorkout,
   handleClearWorkout,
 }) {
-  const [toggleVolume, setToggleVolume] = useState(false);
-
   return (
     <aside className={styles["controls-sidebar"]}>
       <div className={styles["workouts__new-workout-container"]}>
@@ -74,31 +63,8 @@ export function CalculatorSidebar({
           </InputWrapper>
         </div>
       </div>
-      <section className={styles["workouts__total-volume"]}>
-        <div className={styles["workouts__controls"]}>
-          <div className={styles["workouts__subtitle"]}>
-            <div>
-              <h3>Total training volume</h3>
-              <Tooltip
-                message="Total weekly volume per muscle based on training frequency and
-          experience. Red is too high. Light green means the volume is near the
-          upper limit of the recommended range. Dark green is closer to the
-          lower limit."
-              />
-            </div>
-            <IconToggle
-              handleToggle={() => setToggleVolume(!toggleVolume)}
-              iconOne={{
-                icon: <CaretCircleUp size={20} />,
-                label: "Show",
-              }}
-              iconTwo={{
-                icon: <CaretCircleDown size={20} />,
-                label: "Hide",
-              }}
-            />
-          </div>
-        </div>
+      <section className={styles["workouts__controls-container"]}>
+        <h3>Settings</h3>
         <div className={styles["workouts__controls-inputs"]}>
           <InputWrapper maxWidth="100%">
             <InputField
@@ -130,7 +96,7 @@ export function CalculatorSidebar({
               name="Level"
               hasLabel={true}
               options={EXPERIENCE_LEVELS}
-              value={experienceLevel}
+              value={String(experienceLevel)}
               placeholder="Experience level"
               onChange={(e) => onExperienceLevelChange(Number(e.target.value))}
               tooltip={
@@ -159,48 +125,6 @@ export function CalculatorSidebar({
             />
           </InputWrapper>
         </div>
-
-        {mode &&
-        workoutExercises.length > 0 &&
-        Number(experienceLevel) > 0 &&
-        trainingFrequency > 0 ? (
-          <ul
-            className={`${styles["workouts-total-volume__list"]} ${toggleVolume && styles["disabled"]}`}
-          >
-            {totalMuscleVolume &&
-              totalMuscleVolume.map((muscle) => {
-                const hue = 123;
-                const sat = 38;
-                const lightness = muscle.hslLightness;
-                return (
-                  <li
-                    className={styles["workouts-total-volume__list-item"]}
-                    key={muscle.muscle}
-                  >
-                    <span
-                      style={{
-                        backgroundColor:
-                          muscle.hslLightness !== null
-                            ? `hsl(${hue} ${sat}% ${lightness}%)`
-                            : "",
-                        color:
-                          muscle.status === "above" ? "#ef5350" : "inherit",
-                      }}
-                    >
-                      {(muscle.volume * trainingFrequency).toFixed(2)}
-                    </span>
-                    <p>{muscle.muscle}</p>
-                  </li>
-                );
-              })}
-          </ul>
-        ) : (
-          <div className={styles["workouts-total-volume__list"]}>
-            <p>
-              Add exercises and adjust the controls to show volume per muscle.
-            </p>
-          </div>
-        )}
       </section>
 
       <Button

@@ -4,7 +4,9 @@
   flex-direction: column;
   min-height: 0;
   position: relative;
-  flex: 1 1 auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
 }
 
 .workouts__content {
@@ -45,11 +47,11 @@ h1 {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .workouts__workout-name-container > h4 {
-  margin: 0 var(--spacing-md);
+  margin: 0 var(--spacing-sm);
   white-space: nowrap;
 }
 
@@ -60,9 +62,9 @@ h1 {
 .workouts__minimize-wrapper {
   display: flex;
   color: var(--color-text-secondary);
-  padding: 0 var(--spacing-md);
+  padding: var(--spacing-sm);
   font-size: var(--font-size-small);
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
 
 .workouts__minimize-wrapper > span {
@@ -107,9 +109,5 @@ h1 {
     flex-direction: column;
     padding: var(--spacing-xs);
     gap: var(--spacing-md);
-  }
-
-  aside {
-    flex: 0;
   }
 }
