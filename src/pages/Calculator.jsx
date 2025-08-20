@@ -12,11 +12,10 @@ import {
   ArrowsInLineVertical,
   ArrowsOutLineVertical,
   Barbell,
-  Eraser,
 } from "@phosphor-icons/react";
 import { AddExerciseModal } from "../components/addExerciseModal/AddExerciseModal.jsx";
 import { calculateVolumeByLevel } from "../helpers/calculateVolumeByLevel.js";
-import { CalculatorSidebar } from "../components/calculatorSidebar/CalculatorSidebar.jsx";
+import { ControlsSidebar } from "../components/calculatorSidebar/ControlsSidebar.jsx";
 
 import { createWorkout } from "../helpers/createWorkout.js";
 import { MANDATORY_GROUPS } from "../data/mandatoryGroups.js";
@@ -330,26 +329,22 @@ export function Calculator() {
             handleGeneratedWorkout={addGeneratedExercises}
           />
         )}
-        <CalculatorSidebar
+        <ControlsSidebar
           onWorkoutNameChange={handleWorkoutNameChange}
           workoutName={workoutName}
           workouts={workouts}
           onStartOver={handleDeleteWorkout}
-          mode={mode}
           onModeChange={setMode}
           selectedWorkout={selectedWorkout}
           onSelectWorkout={setSelectedWorkout}
-          trainingFrequency={trainingFrequency}
           onTrainingFrequencyChange={setTrainingFrequency}
-          experienceLevel={experienceLevel}
           onExperienceLevelChange={setExperienceLevel}
-          workoutExercises={workoutExercises}
-          totalMuscleVolume={totalMuscleVolume}
           onSaveWorkout={handleSaveWorkout}
           showModal={showModal}
           onShowModal={setShowModal}
           handleGeneratedWorkout={addGeneratedExercises}
           handleClearWorkout={handleClearWorkout}
+          trainingFrequency={trainingFrequency}
         />
         <main className={styles["workouts-container"]}>
           <div className={styles["workouts__workout-name-container"]}>
@@ -399,7 +394,13 @@ export function Calculator() {
           </section>
         </main>
         {/*TODO: verzinnen wat te doen met nieuwe*/}
-        {/*<TotalVolumeSidebar />*/}
+        <TotalVolumeSidebar
+          totalMuscleVolume={totalMuscleVolume}
+          mode={mode}
+          experienceLevel={experienceLevel}
+          workoutExercises={workoutExercises}
+          trainingFrequency={trainingFrequency}
+        />
       </div>
     </div>
   );

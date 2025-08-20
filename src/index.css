@@ -116,9 +116,14 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-@media (max-width: 1024px) {
-  input,
-  select {
-    font-size: 16px;
-  }
-}
+/*TODO:*/
+/* werkt nog niet zoals verwacht, wel nodig om ongewenste mobile zoom te
+voorkomen op input fields. Reden is automatisch browser gedrag.
+Oplossen is de font-sizes app breed veranderen en mobile versie maken
+*/
+/*@media (max-width: 1024px) {*/
+/*  input,*/
+/*  select {*/
+/*    font-size: 16px;*/
+/*  }*/
+/*}*/

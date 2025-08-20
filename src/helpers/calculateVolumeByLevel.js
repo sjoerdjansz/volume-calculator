@@ -1,4 +1,4 @@
-const SET_RANGES = {
+export const SET_RANGES = {
   1: {
     low: 6,
     high: 12,
