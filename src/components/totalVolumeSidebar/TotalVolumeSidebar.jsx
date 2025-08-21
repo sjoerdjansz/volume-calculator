@@ -21,6 +21,9 @@ export function TotalVolumeSidebar({
     const { low, high } = SET_RANGES[xpLevel];
 
     const percent = percentFromAvg * 100;
+    const average = (low + high) / 2;
+    const lowerThan = ((weeklyVolume - low) / low) * 100;
+    const higherThan = ((weeklyVolume - high) / high) * 100;
 
     let fromAverage;
     if (percent > 0) {
@@ -31,15 +34,20 @@ export function TotalVolumeSidebar({
       fromAverage = "below";
     }
 
+    if (weeklyVolume === average) {
+      return `Volume is within the recommended range. 
+It’s ${fromAverage} the average for this muscle (${average} sets).`;
+    }
+
     if (weeklyVolume >= low && weeklyVolume <= high) {
-      return `Volume is within the recommended range (${low}–${high} sets). 
-It’s ${Math.abs(percent).toFixed(1)}% ${fromAverage} the average for this muscle.`;
+      return `Volume is within the suggested range (${low}–${high} sets). 
+It’s ${Math.abs(percent).toFixed(0)}% ${fromAverage} the average for this muscle.`;
     } else if (weeklyVolume < low) {
-      return `About ${Math.abs(percent).toFixed(0)}% below average. 
+      return `About ${Math.abs(lowerThan.toFixed(0))}% lower than the suggested minimum (${low} sets). 
 Consider adding more sets to benefit this muscle group.`;
-    } else {
-      return `Volume is about ${Math.abs(percent).toFixed(0)}% above average. 
-Reducing a few sets may improve recovery and balance.`;
+    } else if (weeklyVolume > high) {
+      return `Volume is about ${higherThan.toFixed(0)}% above the higher end of the range (${high} sets). 
+Reducing a few sets may improve recovery and workout balance.`;
     }
   }
 
