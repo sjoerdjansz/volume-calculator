@@ -1,11 +1,13 @@
 import styles from "./TotalVolumeSidebar.module.css";
-import { IconToggle } from "../iconToggle/IconToggle.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { MathOperations } from "@phosphor-icons/react";
 import {
-  ArrowsInLineVertical,
-  ArrowsOutLineVertical,
-} from "@phosphor-icons/react";
-import { SET_RANGES } from "../../helpers/calculateVolumeByLevel.js";
+  calculateVolumeByLevel,
+  SET_RANGES,
+} from "../../helpers/calculateVolumeByLevel.js";
+import { Button } from "../button/Button.jsx";
+import { calculateTotalVolumes } from "../../helpers/calculateVolume.js";
+import { ESTIMATE_MODES } from "../../data/estimateMode.js";
 
 export function TotalVolumeSidebar({
   totalMuscleVolume,
@@ -14,7 +16,72 @@ export function TotalVolumeSidebar({
   experienceLevel,
   trainingFrequency,
 }) {
-  const [toggleVolume, setToggleVolume] = useState(false);
+  const [toggleTotalVolume, setToggleTotalVolume] = useState(false);
+  const [allWorkouts, setAllWorkouts] = useState([]);
+  const [savedWorkouts, setSavedWorkouts] = useState([]);
+  const [allMuscleVolumes, setAllMuscleVolumes] = useState([]);
+
+  useEffect(() => {
+    const workouts = localStorage.getItem("workouts");
+
+    if (!workouts) {
+      console.warn("No workouts in local storage");
+      return;
+    }
+
+    const parsedWorkouts = workouts ? JSON.parse(workouts) : [];
+
+    setSavedWorkouts(parsedWorkouts);
+
+    const subTotal = parsedWorkouts.map((workout) => {
+      const totalVolumes = calculateTotalVolumes(
+        workout.mode,
+        ESTIMATE_MODES,
+        workout.exercises,
+      );
+
+      return calculateVolumeByLevel(
+        Number(workout.level),
+        totalVolumes,
+        workout.trainingFrequency,
+      );
+    });
+
+    setAllWorkouts(subTotal);
+
+    const summedVolumesArr = sumVolumes(allWorkouts);
+
+    setAllMuscleVolumes(calculateAllVolumes(summedVolumesArr));
+  }, [toggleTotalVolume]);
+
+  function sumVolumes(workouts) {
+    let totals = [];
+    for (let i = 0; i < workouts.length; i++) {
+      // console.log(workouts[i]);
+      workouts[i].map((item) => {
+        totals.push({
+          muscle: item.muscle,
+          volume: item.weeklyVolume,
+        });
+      });
+    }
+    return totals;
+  }
+
+  function calculateAllVolumes(muscles) {
+    const totals = {};
+    for (const { muscle, volume } of muscles) {
+      if (!totals[muscle]) {
+        totals[muscle] = 0;
+      }
+      totals[muscle] = totals[muscle] + volume;
+    }
+
+    return Object.entries(totals).map((entry) => ({
+      muscle: entry[0],
+      totalVolume: entry[1],
+    }));
+  }
 
   function createVolumeMessages(muscle, xpLevel) {
     const { weeklyVolume, percentFromAvg } = muscle;
@@ -63,26 +130,30 @@ Reducing a few sets may improve recovery and workout balance.`;
     }
   }
 
-  // TODO: Zorgen dat de gebruiker de optie heeft om het totale volume van
-  // alle opgeslagen workouts te zien met een toggle in controls oid.
-  // dus: toggle tussen: show single workout / show all workouts volumes
-
   return (
     <aside className={styles["volume-sidebar"]}>
       <div className={styles["volume-sidebar__header"]}>
         <h3>Weekly training volume</h3>
-
-        <IconToggle
-          handleToggle={() => setToggleVolume(!toggleVolume)}
-          iconOne={{
-            icon: <ArrowsOutLineVertical size={20} />,
-            label: "Show details",
-          }}
-          iconTwo={{
-            icon: <ArrowsInLineVertical size={20} />,
-            label: "Hide details",
-          }}
+        <Button
+          label={toggleTotalVolume ? "Total volume" : "Single workout volume"}
+          onClick={() => setToggleTotalVolume(!toggleTotalVolume)}
+          icon={<MathOperations size={20} />}
+          maxWidth={"200px"}
+          type="button"
+          styling="primary-alt"
         />
+
+        {/*<IconToggle*/}
+        {/*  handleToggle={() => setToggleVolumeDetails(!toggleVolumeDetails)}*/}
+        {/*  iconOne={{*/}
+        {/*    icon: <ArrowsOutLineVertical size={20} />,*/}
+        {/*    label: "Show details",*/}
+        {/*  }}*/}
+        {/*  iconTwo={{*/}
+        {/*    icon: <ArrowsInLineVertical size={20} />,*/}
+        {/*    label: "Hide details",*/}
+        {/*  }}*/}
+        {/*></IconToggle>*/}
       </div>
       {mode &&
       workoutExercises.length > 0 &&
@@ -102,9 +173,7 @@ Reducing a few sets may improve recovery and workout balance.`;
                   <p className={styles["muscle-list-item__volume"]}>
                     {muscle.weeklyVolume.toFixed(2)}
                   </p>
-                  <p
-                    className={`${toggleVolume && styles["disabled"]} ${styles["muscle-list-item__content"]}`}
-                  >
+                  <p className={styles["muscle-list-item__content"]}>
                     {createVolumeMessages(muscle, experienceLevel)}
                   </p>
                 </li>

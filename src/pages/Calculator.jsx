@@ -95,13 +95,13 @@ export function Calculator() {
       workoutExercises,
     );
 
-    const totalMuscleVolumesWithColors = calculateVolumeByLevel(
+    const totalMuscleVolumesWithStats = calculateVolumeByLevel(
       Number(experienceLevel),
       totalMuscleVolumes,
       trainingFrequency,
     );
 
-    setTotalMuscleVolume(totalMuscleVolumesWithColors);
+    setTotalMuscleVolume(totalMuscleVolumesWithStats);
     setSingleExerciseVolumes(singleExercises);
   }, [experienceLevel, mode, workoutExercises, trainingFrequency]);
 
