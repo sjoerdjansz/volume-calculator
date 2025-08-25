@@ -16,6 +16,7 @@ export const SET_RANGES = {
   },
 };
 
+// optioneel
 function normalizedRange(volume, low, high) {
   const average = (low + high) / 2;
   const halfRange = (high - low) / 2;
@@ -27,12 +28,6 @@ function normalizedRange(volume, low, high) {
   const norm = (volume - average) / halfRange;
 
   return Math.max(-1, Math.min(1, norm));
-}
-
-function getLightnessValue(norm, baseLightness = 50, maxDelta = 25) {
-  const lightness = baseLightness + norm * maxDelta;
-  // dit is een clamping truc om te zorgen dat we nooit meer dan 100 en minder dan 0 krijgen
-  return Math.max(0, Math.min(100, lightness));
 }
 
 function softNormalize(volume, low, high) {
@@ -60,14 +55,16 @@ export function calculateVolumeByLevel(trainingLevel, data, tFrequency) {
 
     if (weeklyVolume > high) {
       status = "above";
+    } else if (weeklyVolume < low) {
+      status = "below";
+    } else {
+      status = "within";
     }
 
     let norm = null;
-    let lightness = null;
 
     if (inRange) {
       norm = softNormalize(weeklyVolume, low, high);
-      lightness = getLightnessValue(norm, 30, 20);
     }
 
     return {
@@ -75,7 +72,6 @@ export function calculateVolumeByLevel(trainingLevel, data, tFrequency) {
       percentFromAvg: percentFromAverage,
       normalizedFromAvg: norm,
       volumeInRange: inRange,
-      hslLightness: lightness,
       weeklyVolume,
       status,
     };
